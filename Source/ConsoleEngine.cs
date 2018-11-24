@@ -1,18 +1,4 @@
 ﻿namespace ConsoleGameEngine {
-	/* ----------------------------------------------------------------------
-	 * ConsoleGameEngine.cs
-	 * ----------------------------------------------------------------------
-	 * A graphics library wrapping windows api for the windows command prompt
-	 *
-	 * Olle Logdahl, November 01 2018
-	 * Licence: http://unlicense.org/
-	 * ----------------------------------------------------------------------
-	 * 
-	 * This is the main graphics class that contains methods to set pixels,
-	 * draw primitives clear and update screenbuffer, change color palette
-	 * etc.
-	 */
-
 	using System;
 
 	/// <include file='docs.xml' path='docs/members[@name="engine"]/ConsoleEngine/*'/>
