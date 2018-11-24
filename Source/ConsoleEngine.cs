@@ -25,7 +25,7 @@
 			if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
 			if (fontW < 2 || fontH < 2) throw new ArgumentOutOfRangeException();
 
-			Console.Title = "";
+			Console.Title = "Untitled application";
 			Console.CursorVisible = false;
 
 			ConsoleBuffer = new ConsoleBuffer(width, height);
