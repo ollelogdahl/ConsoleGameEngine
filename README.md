@@ -10,7 +10,7 @@ Olle Logdahl, 3 November 2018
 ## Installation
 - Download `.dll` *(Unavailable)*
 - Clone git repo and build yourself
-> `git clone https://github.com/ollelogdahl/ConsoleGameEngine.git`
+> git clone https://github.com/ollelogdahl/ConsoleGameEngine.git
 
 ## Notes
 - Color palette limited to 16 colors in a single session *(this is an internal limitation, see [MDSN](https://docs.microsoft.com/en-us/windows/console/console-screen-buffer-infoex))*
