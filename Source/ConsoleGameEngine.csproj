@@ -30,6 +30,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,19 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Color.cs" />
+    <Compile Include="ConsoleBuffer.cs" />
     <Compile Include="ConsoleEngine.cs" />
     <Compile Include="ConsoleEnums.cs" />
+    <Compile Include="ConsoleFontSize.cs" />
     <Compile Include="ConsoleGame.cs" />
+    <Compile Include="ConsoleHelper.cs" />
+    <Compile Include="ConsolePalette.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utility\Color.cs" />
-    <Compile Include="Utility\Vector.cs" />
-    <Compile Include="Utility\Texture.cs" />
-    <Compile Include="Utility\Utility.cs" />
-    <Compile Include="Utility\Point.cs" />
-    <Compile Include="Wrappers\ConsoleBuffer.cs" />
-    <Compile Include="Wrappers\ConsoleFontSize.cs" />
-    <Compile Include="Wrappers\ConsoleHelper.cs" />
-    <Compile Include="Wrappers\ConsolePalette.cs" />
+    <Compile Include="Texture.cs" />
+    <Compile Include="Utility.cs" />
+    <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="docs.xml" />

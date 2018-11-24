@@ -36,8 +36,9 @@
     <StartupObject>ConsoleGameEngineExamples.Example3D</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ConsoleGameEngine">
-      <HintPath>..\ConsoleGameEngine\bin\Debug\ConsoleGameEngine.dll</HintPath>
+    <Reference Include="ConsoleGameEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Source\bin\Debug\ConsoleGameEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
