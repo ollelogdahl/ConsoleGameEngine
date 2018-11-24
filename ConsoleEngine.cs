@@ -42,7 +42,6 @@
 
 			ConsoleBuffer = new ConsoleBuffer(width, height);
 
-			// hej
 			WindowSize = new Point(width, height);
 			FontSize = new Point(fontW, fontH);
 
