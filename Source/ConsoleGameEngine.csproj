@@ -58,7 +58,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="docs.xml" />
-    <None Include="UNLINCENSE" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
