@@ -277,7 +277,7 @@
 			return (s & 0x8000) > 0;
 		}
 
-		private Point GetMousePosition() {
+		public Point GetMousePos() {
 			ConsoleHelper.Rect r = new ConsoleHelper.Rect();
 			ConsoleHelper.GetWindowRect(consoleHandle, ref r);
 
