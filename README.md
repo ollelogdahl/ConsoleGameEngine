@@ -12,6 +12,7 @@ Olle Logdahl, 3 November 2018
 
 ## Basic Usage
 - Reference the namespace `using ConsoleGameEngine;`
+
 A reference to the ConsoleEngine object is always neccessary, but **NEVER** use more than one in the same application.
 #### ConsoleEngine
 
