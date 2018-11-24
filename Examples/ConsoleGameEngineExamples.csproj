@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ConsoleGameEngineExamples.Example3D</StartupObject>
+    <StartupObject>ConsoleGameEngineExamples.HelloWorld</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ConsoleGameEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">

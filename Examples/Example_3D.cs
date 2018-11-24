@@ -39,11 +39,11 @@ namespace ConsoleGameEngineExamples {
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
 			Engine.SetBackground(0);
-			Engine.Borderless(false);
+			Engine.Borderless(true);
 
 			Console.Title = "3D Demo";
 
-			mesh.LoadFromObj("spaceship1.obj");
+			mesh.LoadFromObj("tank.obj");
 
 			consoleWidth = Engine.WindowSize.X;
 			consoleHeight = Engine.WindowSize.Y;

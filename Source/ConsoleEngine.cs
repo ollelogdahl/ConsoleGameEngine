@@ -1,5 +1,7 @@
 ﻿namespace ConsoleGameEngine {
 	using System;
+	using System.Text;
+	using System.Text.RegularExpressions;
 
 	/// <include file='docs.xml' path='docs/members[@name="engine"]/ConsoleEngine/*'/>
 	public class ConsoleEngine {
@@ -116,6 +118,27 @@
 		public void WriteText(Point pos, string text, int color) {
 			for (int i = 0; i < text.Length; i++) {
 				SetPixel(new Point(pos.X + i, pos.Y), text[i], color);
+			}
+		}
+		public void WriteText(Point pos, string text, FigletFont font, int color) {
+			if (text == null) throw new ArgumentNullException(nameof(text));
+			if (Encoding.UTF8.GetByteCount(text) != text.Length) throw new ArgumentException("String contains non-ascii characters");
+
+			int sWidth = FigletFont.GetStringWidth(font, text);
+
+			for (int line = 1; line <= font.Height; line++) {
+				int runningWidthTotal = 0;
+
+				for (int c = 0; c < text.Length; c++) {
+					char character = text[c];
+					string fragment = FigletFont.GetCharacter(font, character, line);
+					for(int f = 0; f < fragment.Length; f++) {
+						if(fragment[f] != ' ') {
+							SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), fragment[f], color);
+						}
+					}
+					runningWidthTotal += fragment.Length;
+				}
 			}
 		}
 

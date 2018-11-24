@@ -9,13 +9,13 @@ using ConsoleGameEngine;
 namespace ConsoleGameEngineExamples {
 	class HelloWorld : ConsoleGame {
 		static void Main(string[] args) {
-			new HelloWorld().Construct(128, 128, 2, 2, FramerateMode.Unlimited);
+			new HelloWorld().Construct(128, 64, 5, 5, FramerateMode.Unlimited);
 		}
 
 		Random rand = new Random();
+		Point p = new Point(16, 13);
 
-		Point p = new Point(64, 64);
-		int close = 0;
+		float a = 0;
 
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
@@ -26,16 +26,18 @@ namespace ConsoleGameEngineExamples {
 		}
 
 		public override void Update() {
+			p.Y = 13 + (int)(Math.Sin(a*3) * 2.5f);
 
+			a += DeltaTime;
 		}
 
 		public override void Render() {
 			Engine.ClearBuffer();
 
-			Engine.FillTriangle(p, p + new Point(10, 10), p + new Point(-10, 10), 8, ConsoleCharacter.Medium);
-			Engine.Triangle(p, p + new Point(10, 10), p + new Point(-10, 10), 2, ConsoleCharacter.Full);
+			Engine.WriteText(p + new Point(1, 1), "Dungeon", FigletFont.Load("D:\\Game Developement\\Fonts\\FIGlets\\caligraphy.flf"), 1);
+			Engine.WriteText(p, "Dungeon", FigletFont.Load("D:\\Game Developement\\Fonts\\FIGlets\\caligraphy.flf"), 8);
 
-			Engine.SetPixel(Engine.GetMousePos(), ConsoleCharacter.Full, 8);
+			//Engine.SetPixel(Engine.GetMousePos(), ConsoleCharacter.Full, 8);
 			Engine.DisplayBuffer();
 		}
 	}
