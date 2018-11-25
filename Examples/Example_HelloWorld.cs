@@ -13,9 +13,8 @@ namespace ConsoleGameEngineExamples {
 		}
 
 		Random rand = new Random();
-		Point p = new Point(16, 13);
 
-		float a = 0;
+		List<Point> points = new List<Point>();
 
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
@@ -23,19 +22,25 @@ namespace ConsoleGameEngineExamples {
 
 			Engine.Borderless(true);
 			Console.Title = "Demo";
+
+			points.Add(new Point(16, 16));
 		}
 
 		public override void Update() {
-			p.Y = 13 + (int)(Math.Sin(a*3) * 2.5f);
-
-			a += DeltaTime;
+			if(Engine.GetMouseLeft()) {
+				points.Add(Engine.GetMousePos());
+			}
 		}
 
 		public override void Render() {
 			Engine.ClearBuffer();
 
-			Engine.WriteText(p + new Point(1, 1), "Dungeon", FigletFont.Load("D:\\Game Developement\\Fonts\\FIGlets\\caligraphy.flf"), 1);
-			Engine.WriteText(p, "Dungeon", FigletFont.Load("D:\\Game Developement\\Fonts\\FIGlets\\caligraphy.flf"), 7);
+			for(int i = 0; i < points.Count-1; i++) {
+				Engine.Line(points[i], points[i + 1], 7, ConsoleCharacter.Full);
+				Engine.SetPixel(points[i], ConsoleCharacter.Full, 8);
+			}
+			Engine.Line(points.Last(), Engine.GetMousePos(), 7, ConsoleCharacter.Full);
+			Engine.SetPixel(points.Last(), ConsoleCharacter.Full, 8);
 
 			Engine.SetPixel(Engine.GetMousePos(), ConsoleCharacter.Full, 8);
 			Engine.DisplayBuffer();

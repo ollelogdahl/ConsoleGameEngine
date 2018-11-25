@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ConsoleGameEngine {
+﻿namespace ConsoleGameEngine {
 	public class Color {
 		public uint R { get; set; }
 		public uint G { get; set; }

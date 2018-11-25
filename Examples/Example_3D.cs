@@ -60,9 +60,6 @@ namespace ConsoleGameEngineExamples {
 		}
 
 		public override void Update() {
-			float speed = 1;
-
-
 			if (Engine.GetKeyDown(ConsoleKey.Y)) {
 				drawWireframe = !drawWireframe;
 			}

@@ -3,7 +3,7 @@
 	using System.Text;
 	using System.Text.RegularExpressions;
 
-	/// <include file='docs.xml' path='docs/members[@name="engine"]/ConsoleEngine/*'/>
+
 	public class ConsoleEngine {
 		public Color[] Palette { get; private set; }
 		public Point FontSize { get; private set; }
@@ -20,6 +20,7 @@
 		private readonly IntPtr stdOutputHandle = ConsoleHelper.GetStdHandle(-11);
 		private readonly IntPtr stdErrorHandle = ConsoleHelper.GetStdHandle(-12);
 		private readonly IntPtr consoleHandle = ConsoleHelper.GetConsoleWindow();
+
 
 		public ConsoleEngine(int width = 32, int height = 32, int fontW = 8, int fontH = 8) {
 			if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
@@ -61,7 +62,7 @@
 			
 		}
 		public void SetPalette(Color[] colors) {
-			if (colors.Length > 16) throw new OverflowException();
+			if (colors.Length > 16) throw new ArgumentException("Windows command prompt only support 16 colors.");
 			Palette = colors ?? throw new ArgumentNullException();
 
 			for (int i = 0; i < colors.Length; i++) {
@@ -82,6 +83,36 @@
 		public void DisplayBuffer() {
 			ConsoleBuffer.SetBuffer(CharBuffer, ColorBuffer, Background);
 			ConsoleBuffer.Blit();
+		}
+		// ändrar om konsolen ska vara borderless, normal, frame etc.
+		public void Borderless(bool b) {
+			IsBorderless = b;
+
+			int GWL_STYLE = -16;                // hex konstant för stil-förändring
+			int WS_DEFAULT = 0x00C00000;        // vanlig
+			int WS_BORDERLESS = 0x00080000;     // helt borderless
+
+			ConsoleHelper.Rect rect = new ConsoleHelper.Rect();
+			ConsoleHelper.Rect desktopRect = new ConsoleHelper.Rect();
+
+			ConsoleHelper.GetWindowRect(consoleHandle, ref rect);
+			IntPtr desktopHandle = ConsoleHelper.GetDesktopWindow();
+			ConsoleHelper.MapWindowPoints(desktopHandle, consoleHandle, ref rect, 2);
+			ConsoleHelper.GetWindowRect(desktopHandle, ref desktopRect);
+
+			Point wPos = new Point(
+				(desktopRect.Right / 2) - ((WindowSize.X * FontSize.X) / 2),
+				(desktopRect.Bottom / 2) - ((WindowSize.Y * FontSize.Y) / 2));
+
+			if (b == true) {
+				ConsoleHelper.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
+				ConsoleHelper.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
+			} else {
+				ConsoleHelper.SetWindowLong(consoleHandle, GWL_STYLE, WS_DEFAULT);
+				ConsoleHelper.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right, rect.Bottom, 0x0040);
+			}
+
+			ConsoleHelper.DrawMenuBar(consoleHandle);
 		}
 
 		#region Primitives
@@ -120,7 +151,7 @@
 				SetPixel(new Point(pos.X + i, pos.Y), text[i], color);
 			}
 		}
-		public void WriteText(Point pos, string text, FigletFont font, int color) {
+		public void WriteFiglet(Point pos, string text, FigletFont font, int color) {
 			if (text == null) throw new ArgumentNullException(nameof(text));
 			if (Encoding.UTF8.GetByteCount(text) != text.Length) throw new ArgumentException("String contains non-ascii characters");
 
@@ -220,6 +251,7 @@
 			Line(c, a, col, character);
 		}
 
+		// Bresenhams Triangle Algorithm
 		public void FillTriangle(Point a, Point b, Point c, int col, ConsoleCharacter character) {
 			Point min = new Point(Math.Min(Math.Min(a.X, b.X), c.X), Math.Min(Math.Min(a.Y, b.Y), c.Y));
 			Point max = new Point(Math.Max(Math.Max(a.X, b.X), c.X), Math.Max(Math.Max(a.Y, b.Y), c.Y));
@@ -240,37 +272,6 @@
 		}
 
 		#endregion
-
-		// ändrar om konsolen ska vara borderless, normal, frame etc.
-		public void Borderless(bool b) {
-			IsBorderless = b;
-
-			int GWL_STYLE = -16;				// hex konstant för stil-förändring
-			int WS_DEFAULT =	0x00C00000;		// vanlig
-			int WS_BORDERLESS = 0x00080000;     // helt borderless
-
-			ConsoleHelper.Rect rect = new ConsoleHelper.Rect();
-			ConsoleHelper.Rect desktopRect = new ConsoleHelper.Rect();
-
-			ConsoleHelper.GetWindowRect(consoleHandle, ref rect);
-			IntPtr desktopHandle = ConsoleHelper.GetDesktopWindow();
-			ConsoleHelper.MapWindowPoints(desktopHandle, consoleHandle, ref rect, 2);
-			ConsoleHelper.GetWindowRect(desktopHandle, ref desktopRect);
-
-			Point wPos = new Point(
-				(desktopRect.Right  / 2) - ((WindowSize.X * FontSize.X) / 2),
-				(desktopRect.Bottom / 2) - ((WindowSize.Y * FontSize.Y) / 2));
-
-			if(b == true) {
-				ConsoleHelper.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
-				ConsoleHelper.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
-			} else {
-				ConsoleHelper.SetWindowLong(consoleHandle, GWL_STYLE, WS_DEFAULT);
-				ConsoleHelper.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right, rect.Bottom, 0x0040);
-			}
-
-			ConsoleHelper.DrawMenuBar(consoleHandle);
-		}
 
 		// Input
 		public bool GetKey(ConsoleKey key) {
