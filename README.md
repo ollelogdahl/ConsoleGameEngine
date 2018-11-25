@@ -5,8 +5,6 @@ Olle Logdahl, 24 November 2018
 ---
 **ConsoleGameEngine** is a C# library that wraps around the `System.Console` class, adding enhanced functionality for displaying graphics. Implements a new ConsoleGame abstract, a custom buffer, custom color palette, fullscreen capabilites, input handling and more.
 
-*Un*license can be read [here](UNLICENSE)
-
 ## Installation
 - Download `.dll` *(Unavailable)*
 - Clone git repo and build yourself
@@ -60,3 +58,14 @@ class AppName : ConsoleGame {
 ## Notes
 - Color palette limited to 16 colors in a single session *(this is an internal limitation, see [MDSN](https://docs.microsoft.com/en-us/windows/console/console-screen-buffer-infoex))*
 - Only **ONE** reference to a `ConsoleEngine` is allowed per session
+
+---
+
+## Links
+
+- Repository: https://github.com/ollelogdahl/ConsoleGameEngine/
+- Issue Tracker: https://github.com/ollelogdahl/ConsoleGameEngine/issues
+
+## Licensing
+
+This project and all code in it is licensed under *The Unlicense*, which can be read [here](UNLICENSE)
