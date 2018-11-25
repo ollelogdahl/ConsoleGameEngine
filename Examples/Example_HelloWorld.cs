@@ -1,20 +1,19 @@
-﻿using System;
+﻿using ConsoleGameEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using ConsoleGameEngine;
 
 namespace ConsoleGameEngineExamples {
-	class HelloWorld : ConsoleGame {
-		static void Main(string[] args) {
+
+	internal class HelloWorld : ConsoleGame {
+
+		private static void Main(string[] args) {
 			new HelloWorld().Construct(128, 64, 8, 8, FramerateMode.Unlimited);
 		}
 
-		Random rand = new Random();
+		private Random rand = new Random();
 
-		List<Point> points = new List<Point>();
+		private List<Point> points = new List<Point>();
 
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
@@ -27,7 +26,7 @@ namespace ConsoleGameEngineExamples {
 		}
 
 		public override void Update() {
-			if(Engine.GetMouseLeft()) {
+			if (Engine.GetMouseLeft()) {
 				points.Add(Engine.GetMousePos());
 			}
 		}
@@ -35,7 +34,7 @@ namespace ConsoleGameEngineExamples {
 		public override void Render() {
 			Engine.ClearBuffer();
 
-			for(int i = 0; i < points.Count-1; i++) {
+			for (int i = 0; i < points.Count - 1; i++) {
 				Engine.Line(points[i], points[i + 1], 7, ConsoleCharacter.Full);
 				Engine.SetPixel(points[i], ConsoleCharacter.Full, 8);
 			}

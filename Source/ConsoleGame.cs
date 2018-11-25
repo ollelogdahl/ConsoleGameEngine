@@ -1,4 +1,5 @@
 ﻿namespace ConsoleGameEngine {
+
 	using System;
 	using System.Linq;
 	using System.Threading;
@@ -22,14 +23,14 @@
 			Engine = new ConsoleEngine(width, height, fontW, fontH);
 			Create();
 
-			if(m == FramerateMode.Unlimited) gameThread = new Thread(new ThreadStart(GameLoopUnlimited));
+			if (m == FramerateMode.Unlimited) gameThread = new Thread(new ThreadStart(GameLoopUnlimited));
 			if (m == FramerateMode.MaxFps) gameThread = new Thread(new ThreadStart(GameLoopLocked));
 			Running = true;
 			gameThread.Start();
 
 			// gör special checks som ska gå utanför spelloopen
 			// om spel-loopen hänger sig ska man fortfarande kunna avsluta
-			while(Running) {
+			while (Running) {
 				CheckForExit();
 			}
 		}
@@ -45,7 +46,6 @@
 
 				FrameCounter++;
 				FrameCounter = FrameCounter % sampleCount;
-
 
 				// kör main programmet
 				Update();
@@ -65,12 +65,13 @@
 				framerateSamples[FrameCounter] = (double)diff.TotalSeconds;
 			}
 		}
+
 		private void GameLoopUnlimited() {
 			int sampleCount = TargetFramerate;
 			framerateSamples = new double[sampleCount];
 
 			DateTime lastTime;
-			while(Running) {
+			while (Running) {
 				lastTime = DateTime.UtcNow;
 
 				FrameCounter++;
@@ -93,14 +94,17 @@
 		public double GetFramerate() {
 			return 1 / (framerateSamples.Sum() / (TargetFramerate));
 		}
+
 		private void CheckForExit() {
-			if(Engine.GetKeyDown(ConsoleKey.Delete)) {
+			if (Engine.GetKeyDown(ConsoleKey.Delete)) {
 				Running = false;
 			}
 		}
 
 		public abstract void Create();
+
 		public abstract void Update();
+
 		public abstract void Render();
 	}
 }

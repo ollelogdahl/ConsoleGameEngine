@@ -1,9 +1,16 @@
 ﻿namespace ConsoleGameEngine {
+
 	using System;
 	using System.Text;
-	using System.Text.RegularExpressions;
 
 	public class ConsoleEngine {
+
+		// pekare för ConsoleHelper-anrop
+		private readonly IntPtr stdInputHandle = ConsoleHelper.GetStdHandle(-10);
+
+		private readonly IntPtr stdOutputHandle = ConsoleHelper.GetStdHandle(-11);
+		private readonly IntPtr stdErrorHandle = ConsoleHelper.GetStdHandle(-12);
+		private readonly IntPtr consoleHandle = ConsoleHelper.GetConsoleWindow();
 
 		public Color[] Palette { get; private set; }
 		public Point FontSize { get; private set; }
@@ -14,11 +21,6 @@
 		private int Background { get; set; }
 		private ConsoleBuffer ConsoleBuffer { get; set; }
 		private bool IsBorderless { get; set; }
-
-		private readonly IntPtr stdInputHandle = ConsoleHelper.GetStdHandle(-10);
-		private readonly IntPtr stdOutputHandle = ConsoleHelper.GetStdHandle(-11);
-		private readonly IntPtr stdErrorHandle = ConsoleHelper.GetStdHandle(-12);
-		private readonly IntPtr consoleHandle = ConsoleHelper.GetConsoleWindow();
 
 		public ConsoleEngine(int width = 32, int height = 32, int fontW = 8, int fontH = 8) {
 			if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
@@ -57,8 +59,8 @@
 
 			CharBuffer[selectedPoint.X, selectedPoint.Y] = character;
 			ColorBuffer[selectedPoint.X, selectedPoint.Y] = color;
-			
 		}
+
 		public void SetPalette(Color[] colors) {
 			if (colors.Length > 16) throw new ArgumentException("Windows command prompt only support 16 colors.");
 			Palette = colors ?? throw new ArgumentNullException();
@@ -67,18 +69,22 @@
 				ConsolePalette.SetColor(i, colors[i]);
 			}
 		}
+
 		public void SetBackground(int color = 0) {
 			if (color > 16 || color < 0) throw new IndexOutOfRangeException();
 			Background = color;
 		}
+
 		public void ClearBuffer() {
 			Array.Clear(CharBuffer, 0, CharBuffer.Length);
 			Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
 		}
+
 		public void DisplayBuffer() {
 			ConsoleBuffer.SetBuffer(CharBuffer, ColorBuffer, Background);
 			ConsoleBuffer.Blit();
 		}
+
 		public void Borderless(bool b) {
 			IsBorderless = b;
 
@@ -158,8 +164,8 @@
 				for (int c = 0; c < text.Length; c++) {
 					char character = text[c];
 					string fragment = FigletFont.GetCharacter(font, character, line);
-					for(int f = 0; f < fragment.Length; f++) {
-						if(fragment[f] != ' ') {
+					for (int f = 0; f < fragment.Length; f++) {
+						if (fragment[f] != ' ') {
 							SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), fragment[f], color);
 						}
 					}
@@ -267,11 +273,11 @@
 			}
 		}
 
-		int Orient(Point a, Point b, Point c) {
+		private int Orient(Point a, Point b, Point c) {
 			return ((b.X - a.X) * (c.Y - a.Y)) - ((b.Y - a.Y) * (c.X - a.X));
 		}
 
-		#endregion
+		#endregion Primitives
 
 		// Input
 
@@ -279,6 +285,7 @@
 			short s = ConsoleHelper.GetAsyncKeyState((Int32)key);
 			return (s & 0x8000) > 0;
 		}
+
 		public bool GetKeyDown(ConsoleKey key) {
 			int s = Convert.ToInt32(ConsoleHelper.GetAsyncKeyState((Int32)key));
 			return (s == -32767);
@@ -288,6 +295,7 @@
 			short s = ConsoleHelper.GetAsyncKeyState(0x01);
 			return (s & 0x8000) > 0;
 		}
+
 		public Point GetMousePos() {
 			ConsoleHelper.Rect r = new ConsoleHelper.Rect();
 			ConsoleHelper.GetWindowRect(consoleHandle, ref r);

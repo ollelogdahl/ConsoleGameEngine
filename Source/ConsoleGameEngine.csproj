@@ -63,8 +63,5 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Vector.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="docs.xml" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
