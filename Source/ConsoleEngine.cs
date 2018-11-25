@@ -3,8 +3,8 @@
 	using System.Text;
 	using System.Text.RegularExpressions;
 
-
 	public class ConsoleEngine {
+
 		public Color[] Palette { get; private set; }
 		public Point FontSize { get; private set; }
 		public Point WindowSize { get; private set; }
@@ -12,7 +12,6 @@
 		private char[,] CharBuffer { get; set; }
 		private int[,] ColorBuffer { get; set; }
 		private int Background { get; set; }
-
 		private ConsoleBuffer ConsoleBuffer { get; set; }
 		private bool IsBorderless { get; set; }
 
@@ -20,7 +19,6 @@
 		private readonly IntPtr stdOutputHandle = ConsoleHelper.GetStdHandle(-11);
 		private readonly IntPtr stdErrorHandle = ConsoleHelper.GetStdHandle(-12);
 		private readonly IntPtr consoleHandle = ConsoleHelper.GetConsoleWindow();
-
 
 		public ConsoleEngine(int width = 32, int height = 32, int fontW = 8, int fontH = 8) {
 			if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
@@ -73,18 +71,14 @@
 			if (color > 16 || color < 0) throw new IndexOutOfRangeException();
 			Background = color;
 		}
-
-		/// <include file='docs.xml' path='docs/members[@name="engine"]/ClearBuffer/*'/>
 		public void ClearBuffer() {
 			Array.Clear(CharBuffer, 0, CharBuffer.Length);
 			Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
 		}
-		/// <include file='docs.xml' path='docs/members[@name="engine"]/DisplayBuffer/*'/>
 		public void DisplayBuffer() {
 			ConsoleBuffer.SetBuffer(CharBuffer, ColorBuffer, Background);
 			ConsoleBuffer.Blit();
 		}
-		// ändrar om konsolen ska vara borderless, normal, frame etc.
 		public void Borderless(bool b) {
 			IsBorderless = b;
 
@@ -151,6 +145,7 @@
 				SetPixel(new Point(pos.X + i, pos.Y), text[i], color);
 			}
 		}
+
 		public void WriteFiglet(Point pos, string text, FigletFont font, int color) {
 			if (text == null) throw new ArgumentNullException(nameof(text));
 			if (Encoding.UTF8.GetByteCount(text) != text.Length) throw new ArgumentException("String contains non-ascii characters");
@@ -182,6 +177,7 @@
 				SetPixel(v, ConsoleCharacter.Full, col);
 			}
 		}
+
 		public void SemiCircle(Point pos, int radius, int col, int start = 0, int arc = 360, ConsoleCharacter chr = ConsoleCharacter.Full) {
 			for (int a = start; a > -arc + start; a--) {
 				for (int r = 0; r < radius + 1; r++) {
@@ -196,6 +192,7 @@
 
 		// Bresenhams Line Algorithm
 		// https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
+
 		public void Line(Point start, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Point delta = end - start;
 			Point da = Point.Zero, db = Point.Zero;
@@ -237,6 +234,7 @@
 				SetPixel(new Point(end.X, pos.Y + i), chr, col);
 			}
 		}
+
 		public void Fill(Point a, Point b, ConsoleCharacter c, int color) {
 			for (int y = a.Y; y < b.Y; y++) {
 				for (int x = a.X; x < b.X; x++) {
@@ -252,6 +250,7 @@
 		}
 
 		// Bresenhams Triangle Algorithm
+
 		public void FillTriangle(Point a, Point b, Point c, int col, ConsoleCharacter character) {
 			Point min = new Point(Math.Min(Math.Min(a.X, b.X), c.X), Math.Min(Math.Min(a.Y, b.Y), c.Y));
 			Point max = new Point(Math.Max(Math.Max(a.X, b.X), c.X), Math.Max(Math.Max(a.Y, b.Y), c.Y));
@@ -267,6 +266,7 @@
 				}
 			}
 		}
+
 		int Orient(Point a, Point b, Point c) {
 			return ((b.X - a.X) * (c.Y - a.Y)) - ((b.Y - a.Y) * (c.X - a.X));
 		}
@@ -274,6 +274,7 @@
 		#endregion
 
 		// Input
+
 		public bool GetKey(ConsoleKey key) {
 			short s = ConsoleHelper.GetAsyncKeyState((Int32)key);
 			return (s & 0x8000) > 0;
@@ -282,11 +283,11 @@
 			int s = Convert.ToInt32(ConsoleHelper.GetAsyncKeyState((Int32)key));
 			return (s == -32767);
 		}
+
 		public bool GetMouseLeft() {
 			short s = ConsoleHelper.GetAsyncKeyState(0x01);
 			return (s & 0x8000) > 0;
 		}
-
 		public Point GetMousePos() {
 			ConsoleHelper.Rect r = new ConsoleHelper.Rect();
 			ConsoleHelper.GetWindowRect(consoleHandle, ref r);

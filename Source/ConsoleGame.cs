@@ -3,19 +3,6 @@
 	using System.Linq;
 	using System.Threading;
 
-	/*
-	 * ConsoleGame
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
 	public abstract class ConsoleGame {
 		public ConsoleEngine Engine { get; private set; }
 
