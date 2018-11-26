@@ -2,24 +2,18 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ConsoleGameEngine {
 	/// <summary> A FIGlet font. </summary>
 	public class FigletFont {
 
-		public int BaseLine { get; private set; }
-		public int CodeTagCount { get; private set; }
 		public int CommentLines { get; private set; }
-		public int FullLayout { get; private set; }
 		public string HardBlank { get; private set; }
 		public int Height { get; private set; }
 		public int Kerning { get; private set; }
 		public string[] Lines { get; private set; }
 		public int MaxLength { get; private set; }
-		public int OldLayout { get; private set; }
-		public int PrintDirection { get; private set; }
 		public string Signature { get; private set; }
 
 		public static FigletFont Load(string filePath) {
@@ -36,13 +30,8 @@ namespace ConsoleGameEngine {
 			if(font.Signature == "flf2a") {
 				font.HardBlank = configs.First().Last().ToString();
 				font.Height = ParseInt(configs, 1);
-				font.BaseLine = ParseInt(configs, 2);
 				font.MaxLength = ParseInt(configs, 3);
-				font.OldLayout = ParseInt(configs, 4);
 				font.CommentLines = ParseInt(configs, 5);
-				font.PrintDirection = ParseInt(configs, 6);
-				font.FullLayout = ParseInt(configs, 7);
-				font.CodeTagCount = ParseInt(configs, 8);
 			}
 
 
