@@ -9,17 +9,19 @@ Olle Logdahl, 24 November 2018
   <img src="https://imgur.com/wY3RFru.jpg" />
 </p>
 
-## Installation
+## Installation / Getting Started
 - Download `.dll` *(Unavailable)*
 - Clone git repo and build yourself
 > git clone https://github.com/ollelogdahl/ConsoleGameEngine.git
 
+
+
+1. Import `ConsoleGameEngine.dll` to project.
+2. Reference the namespace `using ConsoleGameEngine;`
+
 ---
 
 ## Usage / Features
-- Import `ConsoleGameEngine.dll` to project.
-- Reference the namespace `using ConsoleGameEngine;`
-
 Library contains two main classes, `ConsoleEngine` and `ConsoleGame`
 #### ConsoleEngine
 Is used to draw to the screen, replacement for the `System.Console` class *(kind of)*
