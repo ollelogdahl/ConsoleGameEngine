@@ -6,42 +6,32 @@ using System.Linq;
 namespace ConsoleGameEngineExamples {
 
 	internal class HelloWorld : ConsoleGame {
-
 		private static void Main(string[] args) {
-			new HelloWorld().Construct(128, 64, 8, 8, FramerateMode.Unlimited);
+			new HelloWorld().Construct(128, 64, 4, 4, FramerateMode.MaxFps);
 		}
 
-		private Random rand = new Random();
-
-		private List<Point> points = new List<Point>();
+		Point p = new Point(32, 14);
+		int i = 0;
+		FigletFont font;
 
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
-			Engine.SetBackground(0);
-
 			Engine.Borderless(true);
-			Console.Title = "Demo";
 
-			points.Add(new Point(16, 16));
+			TargetFramerate = 15;
+
+			font = FigletFont.Load("caligraphy.flf");
 		}
 
 		public override void Update() {
-			if (Engine.GetMouseLeft()) {
-				points.Add(Engine.GetMousePos());
-			}
+			p.Y = 14 + (int)(Math.Sin(i * 0.1f) * 4f);
+			i++;
 		}
 
 		public override void Render() {
 			Engine.ClearBuffer();
 
-			for (int i = 0; i < points.Count - 1; i++) {
-				Engine.Line(points[i], points[i + 1], 7, ConsoleCharacter.Full);
-				Engine.SetPixel(points[i], ConsoleCharacter.Full, 8);
-			}
-			Engine.Line(points.Last(), Engine.GetMousePos(), 7, ConsoleCharacter.Full);
-			Engine.SetPixel(points.Last(), ConsoleCharacter.Full, 8);
-
-			Engine.SetPixel(Engine.GetMousePos(), ConsoleCharacter.Full, 8);
+			Engine.WriteFiglet(p, "Hello", font, 8);
 
 			Engine.DisplayBuffer();
 		}
