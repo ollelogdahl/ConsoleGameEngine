@@ -63,9 +63,12 @@ class AppName : ConsoleGame {
 
 ## Links
 
-- Repository: https://github.com/ollelogdahl/ConsoleGameEngine/
-- Issue Tracker: https://github.com/ollelogdahl/ConsoleGameEngine/issues
+- [Repository](https://github.com/ollelogdahl/ConsoleGameEngine/)
+- For reporting errors, visit [Issue Tracker](https://github.com/ollelogdahl/ConsoleGameEngine/issues)!
+- Related Projects / Special Thanks:
+    - [olcConsoleGameEngine (c++)](https://github.com/OneLoneCoder/videos/blob/master/olcConsoleGameEngine.h) by Javidx9
+    - [ColorfulConsole (C#)](http://colorfulconsole.com/) by Tom Akita
 
 ## Licensing
 
-This project and all code in it is licensed under *The Unlicense*, which can be read [here](UNLICENSE)
+This project, and all code it contains, is licensed under *The Unlicense*, which can be read [here](UNLICENSE)
