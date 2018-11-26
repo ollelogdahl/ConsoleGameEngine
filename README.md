@@ -10,7 +10,7 @@ Olle Logdahl, 24 November 2018
 </p>
 
 ## Installation / Getting Started
-- Download `.dll` *(Unavailable)*
+- [Download Lastest Build](https://github.com/ollelogdahl/ConsoleGameEngine/releases/)
 - Clone git repo and build yourself
 > git clone https://github.com/ollelogdahl/ConsoleGameEngine.git
 
@@ -21,6 +21,20 @@ After installing you'll have to:
 2. Reference the namespace `using ConsoleGameEngine;`
 
 ---
+
+## Why?
+I created this Library to make graphics more available for beginners and hobbyists alike. The first programs 
+you create are usually made in the console, but when users want to migrate to actual graphics there is a steep 
+learning curve. My abition with this library is to depricate the need for psuedo-graphics in the console, 
+usually done by moving the cursor, writing a short string and clearing the actual screen. Not only is that 
+solution unintuitive in the long run, but also highly inefficient.
+
+##### Uses
+- retro-styled games and applications intended to run in Console Windows
+- easy-to-use graphics library for basic graphics in games and applications
+- ~~Creating heavy 3D graphics running in 4K~~
+
+Does the last apply to you? Then sorry, *this is not the library you are looking for.*
 
 ## Usage / Features
 Library contains two main classes, `ConsoleEngine` and `ConsoleGame`
