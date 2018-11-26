@@ -42,6 +42,7 @@ namespace ConsoleGameEngineExamples {
 			Engine.SetPixel(points.Last(), ConsoleCharacter.Full, 8);
 
 			Engine.SetPixel(Engine.GetMousePos(), ConsoleCharacter.Full, 8);
+
 			Engine.DisplayBuffer();
 		}
 	}
