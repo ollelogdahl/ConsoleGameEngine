@@ -9,11 +9,11 @@
 	public class ConsoleEngine {
 
 		// pekare för ConsoleHelper-anrop
-		private readonly IntPtr stdInputHandle = ConsoleHelper.GetStdHandle(-10);
+		private readonly IntPtr stdInputHandle = NativeMethods.GetStdHandle(-10);
 
-		private readonly IntPtr stdOutputHandle = ConsoleHelper.GetStdHandle(-11);
-		private readonly IntPtr stdErrorHandle = ConsoleHelper.GetStdHandle(-12);
-		private readonly IntPtr consoleHandle = ConsoleHelper.GetConsoleWindow();
+		private readonly IntPtr stdOutputHandle = NativeMethods.GetStdHandle(-11);
+		private readonly IntPtr stdErrorHandle = NativeMethods.GetStdHandle(-12);
+		private readonly IntPtr consoleHandle = NativeMethods.GetConsoleWindow();
 
 		/// <summary> The active color palette. </summary> <see cref="Color"/>
 		public Color[] Palette { get; private set; }
@@ -48,7 +48,7 @@
 			FontSize = new Point(fontW, fontH);
 
 			// Stänger av alla standard ConsoleInput metoder (Quick-edit etc)
-			ConsoleHelper.SetConsoleMode(stdInputHandle, 0x0080);
+			NativeMethods.SetConsoleMode(stdInputHandle, 0x0080);
 			// Sätter fontstorlek och tvingar Consolas
 			ConsoleFontSize.SetFontSize(stdOutputHandle, (short)fontW, (short)fontH);
 
@@ -114,27 +114,27 @@
 			int WS_DEFAULT = 0x00C00000;        // vanlig
 			int WS_BORDERLESS = 0x00080000;     // helt borderless
 
-			ConsoleHelper.Rect rect = new ConsoleHelper.Rect();
-			ConsoleHelper.Rect desktopRect = new ConsoleHelper.Rect();
+			NativeMethods.Rect rect = new NativeMethods.Rect();
+			NativeMethods.Rect desktopRect = new NativeMethods.Rect();
 
-			ConsoleHelper.GetWindowRect(consoleHandle, ref rect);
-			IntPtr desktopHandle = ConsoleHelper.GetDesktopWindow();
-			ConsoleHelper.MapWindowPoints(desktopHandle, consoleHandle, ref rect, 2);
-			ConsoleHelper.GetWindowRect(desktopHandle, ref desktopRect);
+			NativeMethods.GetWindowRect(consoleHandle, ref rect);
+			IntPtr desktopHandle = NativeMethods.GetDesktopWindow();
+			NativeMethods.MapWindowPoints(desktopHandle, consoleHandle, ref rect, 2);
+			NativeMethods.GetWindowRect(desktopHandle, ref desktopRect);
 
 			Point wPos = new Point(
 				(desktopRect.Right / 2) - ((WindowSize.X * FontSize.X) / 2),
 				(desktopRect.Bottom / 2) - ((WindowSize.Y * FontSize.Y) / 2));
 
 			if (b == true) {
-				ConsoleHelper.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
-				ConsoleHelper.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
+				NativeMethods.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
+				NativeMethods.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
 			} else {
-				ConsoleHelper.SetWindowLong(consoleHandle, GWL_STYLE, WS_DEFAULT);
-				ConsoleHelper.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right, rect.Bottom, 0x0040);
+				NativeMethods.SetWindowLong(consoleHandle, GWL_STYLE, WS_DEFAULT);
+				NativeMethods.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right, rect.Bottom, 0x0040);
 			}
 
-			ConsoleHelper.DrawMenuBar(consoleHandle);
+			NativeMethods.DrawMenuBar(consoleHandle);
 		}
 
 		#region Primitives
@@ -354,7 +354,7 @@
 		/// <param name="key">The key to check.</param>
 		/// <returns>True if key is pressed</returns>
 		public bool GetKey(ConsoleKey key) {
-			short s = ConsoleHelper.GetAsyncKeyState((int)key);
+			short s = NativeMethods.GetAsyncKeyState((int)key);
 			return (s & 0x8000) > 0;
 		}
 
@@ -362,14 +362,14 @@
 		/// <param name="key">The key to check.</param>
 		/// <returns>True if key is down</returns>
 		public bool GetKeyDown(ConsoleKey key) {
-			int s = Convert.ToInt32(ConsoleHelper.GetAsyncKeyState((int)key));
+			int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState((int)key));
 			return (s == -32767);
 		}
 
 		/// <summary> Checks if left mouse button is pressed down. </summary>
 		/// <returns>True if left mouse button is down</returns>
 		public bool GetMouseLeft() {
-			short s = ConsoleHelper.GetAsyncKeyState(0x01);
+			short s = NativeMethods.GetAsyncKeyState(0x01);
 			return (s & 0x8000) > 0;
 		}
 
@@ -377,10 +377,10 @@
 		/// <returns>The mouse's position in character-space.</returns>
 		/// <exception cref="Exception"/>
 		public Point GetMousePos() {
-			ConsoleHelper.Rect r = new ConsoleHelper.Rect();
-			ConsoleHelper.GetWindowRect(consoleHandle, ref r);
+			NativeMethods.Rect r = new NativeMethods.Rect();
+			NativeMethods.GetWindowRect(consoleHandle, ref r);
 
-			if (ConsoleHelper.GetCursorPos(out ConsoleHelper.POINT p)) {
+			if (NativeMethods.GetCursorPos(out NativeMethods.POINT p)) {
 				Point point = new Point();
 				if (!IsBorderless) {
 					p.Y -= 29;

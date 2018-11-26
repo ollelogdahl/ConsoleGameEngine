@@ -4,7 +4,7 @@
 	using Microsoft.Win32.SafeHandles;
 
 	class ConsoleBuffer {
-		private ConsoleHelper.CharInfo[] CharInfoBuffer { get; set; }
+		private NativeMethods.CharInfo[] CharInfoBuffer { get; set; }
 		SafeFileHandle h;
 
 		readonly int width, height;
@@ -13,10 +13,10 @@
 			width = w;
 			height = he;
 
-			h = ConsoleHelper.CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero);
+			h = NativeMethods.CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero);
 
 			if (!h.IsInvalid) {
-				CharInfoBuffer = new ConsoleHelper.CharInfo[width * height];
+				CharInfoBuffer = new NativeMethods.CharInfo[width * height];
 			}
 		}
 
@@ -32,11 +32,11 @@
 		}
 
 		public bool Blit() {
-			ConsoleHelper.SmallRect rect = new ConsoleHelper.SmallRect() { Left = 0, Top = 0, Right = (short)width, Bottom = (short)height };
+			NativeMethods.SmallRect rect = new NativeMethods.SmallRect() { Left = 0, Top = 0, Right = (short)width, Bottom = (short)height };
 
-			return ConsoleHelper.WriteConsoleOutputW(h, CharInfoBuffer,
-				new ConsoleHelper.Coord() { X = (short)width, Y = (short)height },
-				new ConsoleHelper.Coord() { X = 0, Y = 0 }, ref rect);
+			return NativeMethods.WriteConsoleOutputW(h, CharInfoBuffer,
+				new NativeMethods.Coord() { X = (short)width, Y = (short)height },
+				new NativeMethods.Coord() { X = 0, Y = 0 }, ref rect);
 		}
 	}
 }
