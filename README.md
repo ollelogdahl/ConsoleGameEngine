@@ -24,13 +24,20 @@ After installing you'll have to:
 
 ## Usage / Features
 Library contains two main classes, `ConsoleEngine` and `ConsoleGame`
+
+- Custom screen buffer, allows clearing and blitting to console window
+- Console colors with full rgb capabilities
+- Custom & premade Palettes, used for changing console window palette
+- Accessing and setting pixels individually
+- Functions to draw basic shapes and primitives (Triangles, Rectangles, Lines etc.)
+- Writing characters to screen using plain-text and FIGlet fonts
+- Multiple game loops, including fixed framerate and deltatime settings
+- Point and Vector class, for int and float positions
+- Setting console window settings, changing window size and running console borderless
+- Input handling
+
 #### ConsoleEngine
 Is used to draw to the screen, replacement for the `System.Console` class *(kind of)*
-
-- Custom screen buffer, allows clearing and blitting
-- Palettes, changing the 16 available colors
-- Input handling
-- Graphic Primitives
 
 ```c#
 using ConsoleGameEngine;
@@ -42,7 +49,9 @@ Engine.SetPixel(new Point(8, 8), ConsoleCharacter.Full, 15);
 ```
 
 #### ConsoleGame
-Has an instance of the `ConsoleEngine`, and implements a **Game Loop**
+Keeps an instance of the `ConsoleEngine` and implements game loops.
+
+**Note** *Not neccessary, you could use the ConsoleEngine as is*
 
 ```c#
 using ConsoleGameEngine;
@@ -64,7 +73,7 @@ class AppName : ConsoleGame {
 ## Notes
 - Color palette limited to 16 colors in a single session *(this is an internal limitation, see [MDSN](https://docs.microsoft.com/en-us/windows/console/console-screen-buffer-infoex))*
 - Only **ONE** reference to a `ConsoleEngine` is allowed per session
-
+- Press *Delete Key* to close application if running in borderless
 ---
 
 ## Links
@@ -72,9 +81,10 @@ class AppName : ConsoleGame {
 - [Repository](https://github.com/ollelogdahl/ConsoleGameEngine/)
 - For reporting errors, visit [Issue Tracker](https://github.com/ollelogdahl/ConsoleGameEngine/issues)!
 - Related Projects / Special Thanks:
-    - [olcConsoleGameEngine (c++)](https://github.com/OneLoneCoder/videos/blob/master/olcConsoleGameEngine.h) by Javidx9
-    - [ColorfulConsole (C#)](http://colorfulconsole.com/) by Tom Akita
+  - [pinvoke.net](http://www.pinvoke.net/) for windows api documentation
+  - [olcConsoleGameEngine (c++)](https://github.com/OneLoneCoder/videos/blob/master/olcConsoleGameEngine.h) by Javidx9
+  - [ColorfulConsole (C#)](http://colorfulconsole.com/) by Tom Akita
 
 ## Licensing
 
-This project, and all code it contains, is licensed under *The Unlicense*, which can be read [here](UNLICENSE)
+This project, and all code it contains, is licensed under *The Unlicense* and can be read [here](UNLICENSE).
