@@ -5,6 +5,8 @@ Olle Logdahl, 24 November 2018
 ---
 **ConsoleGameEngine** is a C# library that wraps around the `System.Console` class, adding enhanced functionality for displaying graphics. Implements a new ConsoleGame abstract, a custom buffer, custom color palette, fullscreen capabilites, input handling and more.
 
+![Screenshot](https://imgur.com/HDt9EzO.jpg)
+
 ## Installation
 - Download `.dll` *(Unavailable)*
 - Clone git repo and build yourself

@@ -10,13 +10,13 @@ using ConsoleGameEngine;
 namespace ConsoleGameEngineExamples {
 	class Example3D : ConsoleGame {
 		static void Main(string[] args) {
-			new Example3D().Construct(356, 256, 2, 2, FramerateMode.Unlimited);
+			new Example3D().Construct(256, 256, 2, 2, FramerateMode.Unlimited);
 		}
 		readonly Random rand = new Random();
 
 		Mesh mesh;
 		Matrix projectionMatrix;
-		Vec3D modelPosition = new Vec3D(0, 0, 8);
+		Vec3D modelPosition = new Vec3D(0, 0, 4);
 
 		Vec3D camera = new Vec3D(0, 0, 0);
 		Vec3D lookDirection = new Vec3D(0, 0, 0);
@@ -43,7 +43,7 @@ namespace ConsoleGameEngineExamples {
 
 			Console.Title = "3D Demo";
 
-			mesh.LoadFromObj("tank.obj");
+			mesh.LoadFromObj("cube.obj");
 
 			consoleWidth = Engine.WindowSize.X;
 			consoleHeight = Engine.WindowSize.Y;
