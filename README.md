@@ -14,8 +14,9 @@ Olle Logdahl, 24 November 2018
 - Clone git repo and build yourself
 > git clone https://github.com/ollelogdahl/ConsoleGameEngine.git
 
+<br />
 
-
+After installing you'll have to:
 1. Import `ConsoleGameEngine.dll` to project.
 2. Reference the namespace `using ConsoleGameEngine;`
 
