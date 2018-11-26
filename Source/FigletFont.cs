@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ConsoleGameEngine {
+	/// <summary> A FIGlet font. </summary>
 	public class FigletFont {
 
 		public int BaseLine { get; private set; }

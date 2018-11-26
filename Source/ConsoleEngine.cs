@@ -3,6 +3,9 @@
 	using System;
 	using System.Text;
 
+	/// <summary>
+	/// Class for Drawing to a console window.
+	/// </summary>
 	public class ConsoleEngine {
 
 		// pekare för ConsoleHelper-anrop
@@ -137,7 +140,9 @@
 		#region Primitives
 
 		/// <summary> Draws a single pixel to the screenbuffer. </summary>
-		/// <param name="selectedPoint">The character that should be drawn at.</param>
+		/// <param name="v">The Point that should be drawn to.</param>
+		/// <param name="c">The character that should be drawn with.</param>
+		/// <param name="color">The color index.</param>
 		public void SetPixel(Point v, ConsoleCharacter c, int color = 0) {
 			SetPixel(v, (char)c, color);
 		}
@@ -272,10 +277,10 @@
 		}
 
 		/// <summary> Draws a Rectangle. </summary>
-		/// <param name="start">Top Left corner of rectangle.</param>
+		/// <param name="pos">Top Left corner of rectangle.</param>
 		/// <param name="end">Bottom Right corner of rectangle.</param>
-		/// <param name="color">Color to draw with.</param>
-		/// <param name="c">Character to use.</param>
+		/// <param name="col">Color to draw with.</param>
+		/// <param name="chr">Character to use.</param>
 		public void Rectangle(Point pos, Point end, int col = 0, ConsoleCharacter chr = ConsoleCharacter.Full) {
 			for (int i = 0; i < end.X - pos.X; i++) {
 				SetPixel(new Point(pos.X + i, pos.Y), chr, col);

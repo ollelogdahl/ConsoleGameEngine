@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ConsoleGameEngine {
+	/// <summary> Vector of two floats. </summary>
 	public struct Vector {
 		public float X { get; set; }
 		public float Y { get; set; }
@@ -16,9 +17,7 @@ namespace ConsoleGameEngine {
 			this.Y = y;
 		}
 
-		public Point ToPoint() {
-			return new Point((int)Math.Round(X, 0), (int)Math.Round(Y, 0));
-		}
+		public Point ToPoint => new Point((int)Math.Round(X, 0), (int)Math.Round(Y, 0));
 
 		public void Rotate(float a) {
 			Vector n = Vector.Zero;

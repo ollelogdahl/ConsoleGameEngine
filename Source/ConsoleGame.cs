@@ -4,12 +4,20 @@
 	using System.Linq;
 	using System.Threading;
 
+	/// <summary>
+	/// Abstract class to aid in Gamemaking.
+	/// Implements an instance of the ConsoleEngine and has Looping methods.
+	/// </summary>
 	public abstract class ConsoleGame {
+		/// <summary> Instance of a ConsoleEngine. </summary>
 		public ConsoleEngine Engine { get; private set; }
 
+		/// <summary> A counter representing the current unique frame we're at. </summary>
 		public int FrameCounter { get; set; }
+		/// <summary> Factor for generating framerate-independent physics. time between last frame and current. </summary>
 		public float DeltaTime { get; set; }
 
+		/// <summary> The framerate the engine is trying to run at. </summary>
 		public int TargetFramerate { get; set; }
 
 		private bool Running { get; set; }
@@ -17,6 +25,13 @@
 
 		private double[] framerateSamples;
 
+		/// <summary> Initializes the ConsoleGame. Creates the instance of a ConsoleEngine and starts the game loop. </summary>
+		/// <param name="width">Width of the window.</param>
+		/// <param name="height">Height of the window.</param>
+		/// <param name="fontW">Width of the font.</param>
+		/// <param name="fontH">´Height of the font.</param>
+		/// <param name="m">Framerate mode to run at.</param>
+		/// <see cref="FramerateMode"/> <see cref="ConsoleEngine"/>
 		public void Construct(int width, int height, int fontW, int fontH, FramerateMode m) {
 			TargetFramerate = 30;
 
@@ -91,6 +106,8 @@
 			}
 		}
 
+		/// <summary> Gets the current framerate the application is running at. </summary>
+		/// <returns> Application Framerate. </returns>
 		public double GetFramerate() {
 			return 1 / (framerateSamples.Sum() / (TargetFramerate));
 		}
@@ -101,10 +118,11 @@
 			}
 		}
 
+		/// <summary> Run once on Creating, import Resources here. </summary>
 		public abstract void Create();
-
+		/// <summary> Run every frame before rendering. Do math here. </summary>
 		public abstract void Update();
-
+		/// <summary> Run every frame after updating. Do drawing here. </summary>
 		public abstract void Render();
 	}
 }

@@ -7,7 +7,6 @@
 	// En helper klass för att wrappa User32 och Kernel32 dll
 	// Används för
 	class ConsoleHelper {
-
 		#region Signatures
 
 		[DllImport("user32.dll", SetLastError = true)]

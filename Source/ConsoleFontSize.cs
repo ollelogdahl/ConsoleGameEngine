@@ -3,7 +3,7 @@
 	using System.Runtime.InteropServices;
 
 	static class ConsoleFontSize {
-		public static int SetFontSize(IntPtr h, short sizeX, short sizeY) {
+		internal static int SetFontSize(IntPtr h, short sizeX, short sizeY) {
 			if (h == new IntPtr(-1)) {
 				return Marshal.GetLastWin32Error();
 			}

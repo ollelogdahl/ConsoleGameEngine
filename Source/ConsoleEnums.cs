@@ -1,4 +1,5 @@
 ﻿namespace ConsoleGameEngine {
+	/// <summary> Enum for basic Unicodes. </summary>
 	public enum ConsoleCharacter {
 		Null = 0x0000,
 
@@ -20,12 +21,17 @@
 		BoxDrawingL_UR = 0x2514,
 	}
 
+	/// <summary> Enum for Different Gameloop modes. </summary>
 	public enum FramerateMode {
+		/// <summary>Run at max speed, but no higher than TargetFramerate.</summary>
 		MaxFps,
+		/// <summary>Run at max speed.</summary>
 		Unlimited
 	}
 
+	/// <summary> Represents prebuilt palettes. </summary>
 	public static class Palettes {
+		/// <summary> Pico8 palette. </summary>
 		public static Color[] Pico8 { get; set; } = new Color[16] {
 			new Color(0,	0,     0),				// Black
 			new Color(29,	43,    83),
@@ -45,6 +51,7 @@
 			new Color(255,  204,   170),
 		};
 
+		/// <summary> default windows console palette. </summary>
 		public static Color[] Default { get; set; } = new Color[16] {
 			new Color(12,	12,		12),			// Black
 			new Color(0,	55,		218),			// DarkBlue
