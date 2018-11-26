@@ -12,8 +12,13 @@
 		private readonly IntPtr stdErrorHandle = ConsoleHelper.GetStdHandle(-12);
 		private readonly IntPtr consoleHandle = ConsoleHelper.GetConsoleWindow();
 
+		/// <summary> The active color palette. </summary> <see cref="Color"/>
 		public Color[] Palette { get; private set; }
+
+		/// <summary> The current size of the font. </summary> <see cref="Point"/>
 		public Point FontSize { get; private set; }
+
+		/// <summary> The dimensions of the window in characters. </summary> <see cref="Point"/>
 		public Point WindowSize { get; private set; }
 
 		private char[,] CharBuffer { get; set; }
@@ -22,7 +27,12 @@
 		private ConsoleBuffer ConsoleBuffer { get; set; }
 		private bool IsBorderless { get; set; }
 
-		public ConsoleEngine(int width = 32, int height = 32, int fontW = 8, int fontH = 8) {
+		/// <summary> Creates a new ConsoleEngine. </summary>
+		/// <param name="width">Target window width.</param>
+		/// <param name="height">Target window height.</param>
+		/// <param name="fontW">Target font width.</param>
+		/// <param name="fontH">Target font height.</param>
+		public ConsoleEngine(int width, int height, int fontW, int fontH) {
 			if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
 			if (fontW < 2 || fontH < 2) throw new ArgumentOutOfRangeException();
 
@@ -61,6 +71,9 @@
 			ColorBuffer[selectedPoint.X, selectedPoint.Y] = color;
 		}
 
+		/// <summary> Sets the console's color palette </summary>
+		/// <param name="colors"></param>
+		/// <exception cref="ArgumentException"/> <exception cref="ArgumentNullException"/>
 		public void SetPalette(Color[] colors) {
 			if (colors.Length > 16) throw new ArgumentException("Windows command prompt only support 16 colors.");
 			Palette = colors ?? throw new ArgumentNullException();
@@ -70,21 +83,27 @@
 			}
 		}
 
+		/// <summary> Sets the console's background color to one in the active palette. </summary>
+		/// <param name="color">Index of background color in palette.</param>
 		public void SetBackground(int color = 0) {
 			if (color > 16 || color < 0) throw new IndexOutOfRangeException();
 			Background = color;
 		}
 
+		/// <summary> Clears the screenbuffer. </summary>
 		public void ClearBuffer() {
 			Array.Clear(CharBuffer, 0, CharBuffer.Length);
 			Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
 		}
 
+		/// <summary> Blits the screenbuffer to the Console window. </summary>
 		public void DisplayBuffer() {
 			ConsoleBuffer.SetBuffer(CharBuffer, ColorBuffer, Background);
 			ConsoleBuffer.Blit();
 		}
 
+		/// <summary> Sets wheather the window should be borderless or not. </summary>
+		/// <param name="b">True if intended to run borderless.</param>
 		public void Borderless(bool b) {
 			IsBorderless = b;
 
@@ -117,18 +136,16 @@
 
 		#region Primitives
 
+		/// <summary> Draws a single pixel to the screenbuffer. </summary>
+		/// <param name="selectedPoint">The character that should be drawn at.</param>
 		public void SetPixel(Point v, ConsoleCharacter c, int color = 0) {
 			SetPixel(v, (char)c, color);
 		}
 
-		public void ColorMatrix(Point c, int[,] colors) {
-			for (int y = 0; y < colors.GetLength(1); y++) {
-				for (int x = 0; x < colors.GetLength(0); x++) {
-					ColorBuffer[c.X + x, c.Y + y] = colors[x, y];
-				}
-			}
-		}
-
+		/// <summary> Draws a rectangle using boxdrawing symbols. </summary>
+		/// <param name="pos">Top Left corner of box.</param>
+		/// <param name="end">Bottom Right corner of box.</param>
+		/// <param name="color">The specified color index.</param>
 		public void Window(Point pos, Point end, int color) {
 			for (int i = 1; i < end.X - pos.X; i++) {
 				SetPixel(new Point(pos.X + i, pos.Y), ConsoleCharacter.BoxDrawingL_H, color);
@@ -146,12 +163,22 @@
 			SetPixel(new Point(end.X, end.Y), ConsoleCharacter.BoxDrawingL_UL, color);
 		}
 
+		/// <summary> Writes plain text to the buffer. </summary>
+		/// <param name="pos">The position to write to.</param>
+		/// <param name="text">String to write.</param>
+		/// <param name="color">Specified color index to write with.</param>
 		public void WriteText(Point pos, string text, int color) {
 			for (int i = 0; i < text.Length; i++) {
 				SetPixel(new Point(pos.X + i, pos.Y), text[i], color);
 			}
 		}
 
+		/// <summary>  Writes text to the buffer in a FIGlet font. </summary>
+		/// <param name="pos">The Top left corner of the text.</param>
+		/// <param name="text">String to write.</param>
+		/// <param name="font">FIGLET font to write with.</param>
+		/// <param name="color">Specified color index to write with.</param>
+		/// <see cref="FigletFont"/>
 		public void WriteFiglet(Point pos, string text, FigletFont font, int color) {
 			if (text == null) throw new ArgumentNullException(nameof(text));
 			if (Encoding.UTF8.GetByteCount(text) != text.Length) throw new ArgumentException("String contains non-ascii characters");
@@ -174,6 +201,11 @@
 			}
 		}
 
+		/// <summary> Draws an Arc. </summary>
+		/// <param name="pos">Center of Arc.</param>
+		/// <param name="radius">Radius of Arc.</param>
+		/// <param name="col">Specified color index.</param>
+		/// <param name="arc">angle in degrees, 360 if not specified.</param>
 		public void Arc(Point pos, int radius, int col, int arc = 360) {
 			for (int a = 0; a < arc; a++) {
 				int x = (int)(radius * Math.Cos((float)a / 57.29577f));
@@ -184,21 +216,31 @@
 			}
 		}
 
-		public void SemiCircle(Point pos, int radius, int col, int start = 0, int arc = 360, ConsoleCharacter chr = ConsoleCharacter.Full) {
+		/// <summary> Draws a filled Arc. </summary>
+		/// <param name="pos">Center of Arc.</param>
+		/// <param name="radius">Radius of Arc.</param>
+		/// <param name="col">Specified color index.</param>
+		/// <param name="start">Start angle in degrees.</param>
+		/// <param name="arc">End angle in degrees.</param>
+		public void SemiCircle(Point pos, int radius, int col, int start = 0, int arc = 360) {
 			for (int a = start; a > -arc + start; a--) {
 				for (int r = 0; r < radius + 1; r++) {
 					int x = (int)(r * Math.Cos((float)a / 57.29577f));
 					int y = (int)(r * Math.Sin((float)a / 57.29577f));
 
 					Point v = new Point(pos.X + x, pos.Y + y);
-					SetPixel(v, chr, col);
+					SetPixel(v, ConsoleCharacter.Full, col);
 				}
 			}
 		}
 
 		// Bresenhams Line Algorithm
 		// https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm
-
+		/// <summary> Draws a line from start to end. (Bresenhams Line) </summary>
+		/// <param name="start">Point to draw line from.</param>
+		/// <param name="end">Point to end line at.</param>
+		/// <param name="color">Color to draw with.</param>
+		/// <param name="c">Character to use.</param>
 		public void Line(Point start, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Point delta = end - start;
 			Point da = Point.Zero, db = Point.Zero;
@@ -229,6 +271,11 @@
 			}
 		}
 
+		/// <summary> Draws a Rectangle. </summary>
+		/// <param name="start">Top Left corner of rectangle.</param>
+		/// <param name="end">Bottom Right corner of rectangle.</param>
+		/// <param name="color">Color to draw with.</param>
+		/// <param name="c">Character to use.</param>
 		public void Rectangle(Point pos, Point end, int col = 0, ConsoleCharacter chr = ConsoleCharacter.Full) {
 			for (int i = 0; i < end.X - pos.X; i++) {
 				SetPixel(new Point(pos.X + i, pos.Y), chr, col);
@@ -241,7 +288,12 @@
 			}
 		}
 
-		public void Fill(Point a, Point b, ConsoleCharacter c, int color) {
+		/// <summary> Draws a Rectangle and fills it. </summary>
+		/// <param name="a">Top Left corner of rectangle.</param>
+		/// <param name="b">Bottom Right corner of rectangle.</param>
+		/// <param name="color">Color to draw with.</param>
+		/// <param name="c">Character to use.</param>
+		public void Fill(Point a, Point b, int color, ConsoleCharacter c) {
 			for (int y = a.Y; y < b.Y; y++) {
 				for (int x = a.X; x < b.X; x++) {
 					SetPixel(new Point(x, y), (char)c, color);
@@ -249,6 +301,12 @@
 			}
 		}
 
+		/// <summary> Draws a Triangle. </summary>
+		/// <param name="a">Point A.</param>
+		/// <param name="b">Point B.</param>
+		/// <param name="c">Point C.</param>
+		/// <param name="col">Color to draw with.</param>
+		/// <param name="character">Character to use.</param>
 		public void Triangle(Point a, Point b, Point c, int col, ConsoleCharacter character) {
 			Line(a, b, col, character);
 			Line(b, c, col, character);
@@ -257,6 +315,12 @@
 
 		// Bresenhams Triangle Algorithm
 
+		/// <summary> Draws a Triangle and fills it. </summary>
+		/// <param name="a">Point A.</param>
+		/// <param name="b">Point B.</param>
+		/// <param name="c">Point C.</param>
+		/// <param name="col">Color to draw with.</param>
+		/// <param name="character">Character to use.</param>
 		public void FillTriangle(Point a, Point b, Point c, int col, ConsoleCharacter character) {
 			Point min = new Point(Math.Min(Math.Min(a.X, b.X), c.X), Math.Min(Math.Min(a.Y, b.Y), c.Y));
 			Point max = new Point(Math.Max(Math.Max(a.X, b.X), c.X), Math.Max(Math.Max(a.Y, b.Y), c.Y));
@@ -281,21 +345,32 @@
 
 		// Input
 
+		/// <summary> Checks if specified key is pressed. </summary>
+		/// <param name="key">The key to check.</param>
+		/// <returns>True if key is pressed</returns>
 		public bool GetKey(ConsoleKey key) {
-			short s = ConsoleHelper.GetAsyncKeyState((Int32)key);
+			short s = ConsoleHelper.GetAsyncKeyState((int)key);
 			return (s & 0x8000) > 0;
 		}
 
+		/// <summary> Checks if specified key is pressed down. </summary>
+		/// <param name="key">The key to check.</param>
+		/// <returns>True if key is down</returns>
 		public bool GetKeyDown(ConsoleKey key) {
-			int s = Convert.ToInt32(ConsoleHelper.GetAsyncKeyState((Int32)key));
+			int s = Convert.ToInt32(ConsoleHelper.GetAsyncKeyState((int)key));
 			return (s == -32767);
 		}
 
+		/// <summary> Checks if left mouse button is pressed down. </summary>
+		/// <returns>True if left mouse button is down</returns>
 		public bool GetMouseLeft() {
 			short s = ConsoleHelper.GetAsyncKeyState(0x01);
 			return (s & 0x8000) > 0;
 		}
 
+		/// <summary> Gets the mouse position. </summary>
+		/// <returns>The mouse's position in character-space.</returns>
+		/// <exception cref="Exception"/>
 		public Point GetMousePos() {
 			ConsoleHelper.Rect r = new ConsoleHelper.Rect();
 			ConsoleHelper.GetWindowRect(consoleHandle, ref r);
@@ -316,7 +391,6 @@
 				}
 				return new Point(Utility.Clamp(point.X, 0, WindowSize.X - 1), Utility.Clamp(point.Y, 0, WindowSize.Y - 1));
 			}
-
 			throw new Exception();
 		}
 	}
