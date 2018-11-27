@@ -25,7 +25,7 @@ After installing you'll have to:
 ## Why?
 I created this Library to make graphics more available for beginners and hobbyists alike. The first programs 
 you create are usually made in the console, but when users want to migrate to actual graphics there is a steep 
-learning curve. My abition with this library is to depricate the need for psuedo-graphics in the console, 
+learning curve. My ambition with this library is to depricate the need for psuedo-graphics in the console, 
 usually done by moving the cursor, writing a short string and clearing the actual screen. Not only is that 
 solution unintuitive in the long run, but also highly inefficient.
 
