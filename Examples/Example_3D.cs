@@ -43,7 +43,7 @@ namespace ConsoleGameEngineExamples {
 
 			Console.Title = "3D Demo";
 
-			mesh.LoadFromObj("cube.obj");
+			mesh.LoadFromObj("monkey.obj");
 
 			consoleWidth = Engine.WindowSize.X;
 			consoleHeight = Engine.WindowSize.Y;
