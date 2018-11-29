@@ -32,8 +32,8 @@ usually done by moving the cursor, writing a short string and clearing the actua
 solution unintuitive in the long run, but also highly inefficient.
 
 ##### Uses
-- retro-styled games and applications intended to run in Console Windows
-- easy-to-use graphics library for basic graphics in games and applications
+- retro-terminal-styled games and applications
+- easy-to-use graphics library for basic and advanced graphics in games and applications
 - ~~Creating heavy 3D graphics running in 4K~~
 
 Does the last apply to you? Then sorry, *this is not the library you are looking for.*
@@ -41,7 +41,7 @@ Does the last apply to you? Then sorry, *this is not the library you are looking
 ## Usage / Features
 Library contains two main classes, `ConsoleEngine` and `ConsoleGame`
 
-- Custom screen buffer, allows clearing and blitting to console window
+- Custom character screen buffer, allows clearing and blitting to console window
 - Console colors with full rgb capabilities
 - Custom & premade Palettes, used for changing console window palette
 - Accessing and setting pixels individually
@@ -96,10 +96,12 @@ class AppName : ConsoleGame {
 
 - [Repository](https://github.com/ollelogdahl/ConsoleGameEngine/)
 - For reporting errors, visit [Issue Tracker](https://github.com/ollelogdahl/ConsoleGameEngine/issues)!
-- Related Projects / Special Thanks:
-  - [pinvoke.net](http://www.pinvoke.net/) for windows api documentation
+- Related Projects:
   - [olcConsoleGameEngine (c++)](https://github.com/OneLoneCoder/videos/blob/master/olcConsoleGameEngine.h) by Javidx9
   - [ColorfulConsole (C#)](http://colorfulconsole.com/) by Tom Akita
+- Special Thanks to:
+  - [pinvoke.net](http://www.pinvoke.net/) by Redgate Software, for windows api documentation
+  - [ScreenToGif](https://www.screentogif.com) by Nicke Manarin, for making screen-gif capturing easy :)
 
 ## Licensing
 
