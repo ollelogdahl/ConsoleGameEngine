@@ -5,8 +5,8 @@ VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8C08CF5D-46ED-4A02-850B-93765D06C9CC}"
 	ProjectSection(SolutionItems) = preProject
-		ConsoleGameEngine\README.md = ConsoleGameEngine\README.md
-		ConsoleGameEngine\TODO.txt = ConsoleGameEngine\TODO.txt
+		README.md = README.md
+		TODO.txt = TODO.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleGameEngineExamples", "Examples\ConsoleGameEngineExamples.csproj", "{44EB6014-CBFA-4561-9848-F2923137BF08}"

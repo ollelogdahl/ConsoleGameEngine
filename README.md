@@ -16,9 +16,6 @@ color palette, fullscreen capabilites, input handling and more.
 - Clone git repo and build yourself
 > git clone https://github.com/ollelogdahl/ConsoleGameEngine.git
 
-At the moment no .sln file is included, so you will have to create a new Solution and import the .csproj 
-files (Visual Studio)
-
 <br />
 
 After installing you'll have to:
