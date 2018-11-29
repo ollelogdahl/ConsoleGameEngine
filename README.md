@@ -8,9 +8,7 @@ functionality for displaying graphics. Implements a new ConsoleGame abstract, a 
 color palette, fullscreen capabilites, input handling and more.
 
 <p align="center">
-  <img src="
-        https://github.com/ollelogdahl/ConsoleGameEngine/blob/master/Media/monkeyspin.gif
-      " />
+  <img src="https://github.com/ollelogdahl/ConsoleGameEngine/blob/master/Media/monkeyspin.gif" />
 </p>
 
 ## Installation / Getting Started
