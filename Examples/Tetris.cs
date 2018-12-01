@@ -13,15 +13,15 @@ namespace ConsoleGameEngineExamples {
 
 		int[] playingField;
 
-		static int fieldWidth = 12; static int fieldHeight = 18;
+		static int fieldWidth = 14; static int fieldHeight = 24;
 
 		int currentTetromino = 0;
 		int rotation = 0;
 		Point current;
-		int speed = 20;
 
 		List<int> lines = new List<int>();
 
+		int highscore = 0;
 		int score = 0;
 
 		bool gameover = false;
@@ -43,22 +43,16 @@ namespace ConsoleGameEngineExamples {
 			tetromino[5] = ".5...5...55.....";
 			tetromino[6] = "..6...6..66.....";
 
-			playingField = new int[fieldWidth * fieldHeight];
-			for (int x = 0; x < fieldWidth; x++) // kant för banan
-				for (int y = 0; y < fieldHeight; y++)
-					playingField[y * fieldWidth + x] = (x == 0 || x == fieldWidth - 1 || y == fieldHeight - 1) ? -1 : 0;	// väggar
-
-			current = new Point(fieldWidth / 2 - 2, 0);
-			currentTetromino = rand.Next(0, 7);
+			Restart();
 		}
 
 		public override void Update() {
 			if (!gameover) {
 				// hanterar input
-				if (Engine.GetKey(ConsoleKey.RightArrow)) {
+				if (Engine.GetKeyDown(ConsoleKey.RightArrow)) {
 					current.X += DoesPieceFit(currentTetromino, rotation, current + new Point(1, 0)) ? 1 : 0;
 				}
-				if (Engine.GetKey(ConsoleKey.LeftArrow)) {
+				if (Engine.GetKeyDown(ConsoleKey.LeftArrow)) {
 					current.X -= DoesPieceFit(currentTetromino, rotation, current - new Point(1, 0)) ? 1 : 0;
 				}
 				if (Engine.GetKey(ConsoleKey.DownArrow)) {
@@ -122,7 +116,7 @@ namespace ConsoleGameEngineExamples {
 						current.X = fieldWidth / 2 -2;
 						current.Y = 0;
 						rotation = 0;
-						currentTetromino = rand.Next(0, 7);
+						currentTetromino = rand.Next(0, tetromino.Length);
 
 						// om tetrominon inte får plats direkt förlorar spelaren
 						gameover = !DoesPieceFit(currentTetromino, rotation, current);
@@ -130,8 +124,20 @@ namespace ConsoleGameEngineExamples {
 				}
 
 			} else {
-				Engine.WriteText(new Point(fieldWidth / 2 - 5, fieldHeight/2), "Game Over!", 7);
+				Engine.Fill(new Point(fieldWidth / 2 - 5, fieldHeight / 2 - 1), new Point(fieldWidth / 2 + 6, fieldHeight / 2 + 3), 0, ConsoleCharacter.Full);
+				Engine.WriteText(new Point(fieldWidth / 2 - 4, fieldHeight/2), "Game Over!", 8);
+				Engine.WriteText(new Point(fieldWidth / 2 - 4, fieldHeight / 2 + 1), "Highscore:", 7);
+
+				if(highscore < score) {
+					highscore = score;
+				}
+
+				Engine.WriteText(new Point(fieldWidth / 2 - 4, fieldHeight / 2 + 2), highscore.ToString(), 9);
+
+				Engine.Window(new Point(fieldWidth / 2 - 5, fieldHeight / 2 - 1), new Point(fieldWidth / 2 + 6, fieldHeight / 2 + 3), 7);
+
 				Engine.DisplayBuffer();
+
 				Thread.Sleep(4000);
 				Restart();
 			}
@@ -215,7 +221,7 @@ namespace ConsoleGameEngineExamples {
 					playingField[y * fieldWidth + x] = (x == 0 || x == fieldWidth - 1 || y == fieldHeight - 1) ? -1 : 0;    // väggar
 
 			current = new Point(fieldWidth / 2 - 2, 0);
-			currentTetromino = rand.Next(0, 7);
+			currentTetromino = rand.Next(0, tetromino.Length);
 		}
 	}
 }

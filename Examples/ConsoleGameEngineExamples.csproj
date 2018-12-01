@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ConsoleGameEngineExamples.Tron</StartupObject>
+    <StartupObject>ConsoleGameEngineExamples.Tetris</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ConsoleGameEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -54,7 +54,6 @@
     <Compile Include="Example_3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tetris.cs" />
-    <Compile Include="Tron.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
