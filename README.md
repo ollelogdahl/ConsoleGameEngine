@@ -86,6 +86,8 @@ class AppName : ConsoleGame {
 }
 ```
 
+##### Try out some example games over [here](https://github.com/ollelogdahl/ConsoleGameEngine/tree/master/Examples)
+
 ## Notes
 - Color palette limited to 16 colors in a single session *(this is an internal limitation, see [MDSN](https://docs.microsoft.com/en-us/windows/console/console-screen-buffer-infoex))*
 - Only **ONE** reference to a `ConsoleEngine` is allowed per session
