@@ -2,8 +2,6 @@
 	using System;
 	using System.Runtime.InteropServices;
 
-	using System.Drawing;
-
 	class ConsoleFont {
 
 
@@ -20,10 +18,10 @@
 			cfi.dwFontSize.X = sizeX;
 			cfi.dwFontSize.Y = sizeY;
 
-			// forcerar font till Terminal (Raster)
+			// sätter font till Terminal (Raster)
 			cfi.FaceName = "Terminal";
 
-			NativeMethods.SetCurrentConsoleFontEx(h, true, ref cfi);
+			NativeMethods.SetCurrentConsoleFontEx(h, false, ref cfi);
 			return 0;
 		}
 	}

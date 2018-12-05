@@ -36,23 +36,16 @@
 		/// <param name="fontH">Target font height.</param>
 		public ConsoleEngine(int width, int height, int fontW, int fontH) {
 			if (width < 1 || height < 1) throw new ArgumentOutOfRangeException();
-			if (fontW < 2 || fontH < 2) throw new ArgumentOutOfRangeException();
+			if (fontW < 1 || fontH < 1) throw new ArgumentOutOfRangeException();
 
-			Console.Title = "Untitled application";
+			Console.Title = "Untitled console application";
 			Console.CursorVisible = false;
+			Console.SetBufferSize(width, height);
 
 			ConsoleBuffer = new ConsoleBuffer(width, height);
 
 			WindowSize = new Point(width, height);
 			FontSize = new Point(fontW, fontH);
-
-			// Stänger av alla standard ConsoleInput metoder (Quick-edit etc)
-			NativeMethods.SetConsoleMode(stdInputHandle, 0x0080);
-			// Sätter fontstorlek och tvingar Consolas
-			ConsoleFont.SetFont(stdOutputHandle, (short)fontW, (short)fontH);
-
-			Console.SetWindowSize(width, height);
-			Console.SetBufferSize(width, height);
 
 			CharBuffer = new char[width, height];
 			ColorBuffer = new int[width, height];
@@ -60,7 +53,14 @@
 			SetBackground(0);
 			SetPalette(Palettes.Default);
 
-			// sätter igen, idk men det behövs
+			// Stänger av alla standard ConsoleInput metoder (Quick-edit etc)
+			NativeMethods.SetConsoleMode(stdInputHandle, 0x0080);
+
+			// Sätter fontstorlek och tvingar Raster (Terminal)
+			// Detta måste göras efter SetBufferSize, annars ger den en IOException
+			ConsoleFont.SetFont(stdOutputHandle, (short)fontW, (short)fontH);
+			// sätter storleken på fönstret, måste ske efter SetBufferSize för annars
+			// blir fönstret 1 px större (?)
 			Console.SetWindowSize(width, height);
 		}
 

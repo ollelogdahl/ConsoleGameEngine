@@ -27,7 +27,7 @@ namespace ConsoleGameEngineExamples {
 		bool gameover = false;
 
 		private static void Main(string[] args) {
-			new Tetris().Construct(fieldWidth+2, fieldHeight + 4, 8, 8, FramerateMode.MaxFps);
+			new Tetris().Construct(fieldWidth + 2, fieldHeight + 4, 8, 8, FramerateMode.MaxFps);
 		}
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
