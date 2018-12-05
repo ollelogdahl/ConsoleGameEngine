@@ -10,7 +10,6 @@
 
 		// pekare för ConsoleHelper-anrop
 		private readonly IntPtr stdInputHandle = NativeMethods.GetStdHandle(-10);
-
 		private readonly IntPtr stdOutputHandle = NativeMethods.GetStdHandle(-11);
 		private readonly IntPtr stdErrorHandle = NativeMethods.GetStdHandle(-12);
 		private readonly IntPtr consoleHandle = NativeMethods.GetConsoleWindow();
@@ -50,7 +49,7 @@
 			// Stänger av alla standard ConsoleInput metoder (Quick-edit etc)
 			NativeMethods.SetConsoleMode(stdInputHandle, 0x0080);
 			// Sätter fontstorlek och tvingar Consolas
-			ConsoleFontSize.SetFontSize(stdOutputHandle, (short)fontW, (short)fontH);
+			ConsoleFont.SetFont(stdOutputHandle, (short)fontW, (short)fontH);
 
 			Console.SetWindowSize(width, height);
 			Console.SetBufferSize(width, height);
@@ -66,7 +65,7 @@
 		}
 
 		// Rita
-		private void SetPixel(Point selectedPoint, char character, int color = 0) {
+		private void SetPixel(Point selectedPoint, int color, char character) {
 			if (selectedPoint.X >= CharBuffer.GetLength(0) || selectedPoint.Y >= CharBuffer.GetLength(1)
 				|| selectedPoint.X < 0 || selectedPoint.Y < 0) return;
 
@@ -141,31 +140,31 @@
 
 		/// <summary> Draws a single pixel to the screenbuffer. </summary>
 		/// <param name="v">The Point that should be drawn to.</param>
-		/// <param name="c">The character that should be drawn with.</param>
 		/// <param name="color">The color index.</param>
-		public void SetPixel(Point v, ConsoleCharacter c, int color = 0) {
-			SetPixel(v, (char)c, color);
+		/// <param name="c">The character that should be drawn with.</param>
+		public void SetPixel(Point v, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
+			SetPixel(v, color, (char)c);
 		}
 
-		/// <summary> Draws a rectangle using boxdrawing symbols. </summary>
+		/// <summary> Draws a frame using boxdrawing symbols. </summary>
 		/// <param name="pos">Top Left corner of box.</param>
 		/// <param name="end">Bottom Right corner of box.</param>
 		/// <param name="color">The specified color index.</param>
-		public void Window(Point pos, Point end, int color) {
+		public void Frame(Point pos, Point end, int color) {
 			for (int i = 1; i < end.X - pos.X; i++) {
-				SetPixel(new Point(pos.X + i, pos.Y), ConsoleCharacter.BoxDrawingL_H, color);
-				SetPixel(new Point(pos.X + i, end.Y), ConsoleCharacter.BoxDrawingL_H, color);
+				SetPixel(new Point(pos.X + i, pos.Y), color, ConsoleCharacter.BoxDrawingL_H);
+				SetPixel(new Point(pos.X + i, end.Y), color, ConsoleCharacter.BoxDrawingL_H);
 			}
 
 			for (int i = 1; i < end.Y - pos.Y; i++) {
-				SetPixel(new Point(pos.X, pos.Y + i), ConsoleCharacter.BoxDrawingL_V, color);
-				SetPixel(new Point(end.X, pos.Y + i), ConsoleCharacter.BoxDrawingL_V, color);
+				SetPixel(new Point(pos.X, pos.Y + i), color, ConsoleCharacter.BoxDrawingL_V);
+				SetPixel(new Point(end.X, pos.Y + i), color, ConsoleCharacter.BoxDrawingL_V);
 			}
 
-			SetPixel(new Point(pos.X, pos.Y), ConsoleCharacter.BoxDrawingL_DR, color);
-			SetPixel(new Point(end.X, pos.Y), ConsoleCharacter.BoxDrawingL_DL, color);
-			SetPixel(new Point(pos.X, end.Y), ConsoleCharacter.BoxDrawingL_UR, color);
-			SetPixel(new Point(end.X, end.Y), ConsoleCharacter.BoxDrawingL_UL, color);
+			SetPixel(new Point(pos.X, pos.Y), color, ConsoleCharacter.BoxDrawingL_DR);
+			SetPixel(new Point(end.X, pos.Y), color, ConsoleCharacter.BoxDrawingL_DL);
+			SetPixel(new Point(pos.X, end.Y), color, ConsoleCharacter.BoxDrawingL_UR);
+			SetPixel(new Point(end.X, end.Y), color, ConsoleCharacter.BoxDrawingL_UL);
 		}
 
 		/// <summary> Writes plain text to the buffer. </summary>
@@ -174,7 +173,7 @@
 		/// <param name="color">Specified color index to write with.</param>
 		public void WriteText(Point pos, string text, int color) {
 			for (int i = 0; i < text.Length; i++) {
-				SetPixel(new Point(pos.X + i, pos.Y), text[i], color);
+				SetPixel(new Point(pos.X + i, pos.Y), color, text[i]);
 			}
 		}
 
@@ -198,7 +197,7 @@
 					string fragment = FigletFont.GetCharacter(font, character, line);
 					for (int f = 0; f < fragment.Length; f++) {
 						if (fragment[f] != ' ') {
-							SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), fragment[f], color);
+							SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), color, fragment[f]);
 						}
 					}
 					runningWidthTotal += fragment.Length;
@@ -211,30 +210,32 @@
 		/// <param name="radius">Radius of Arc.</param>
 		/// <param name="col">Specified color index.</param>
 		/// <param name="arc">angle in degrees, 360 if not specified.</param>
-		public void Arc(Point pos, int radius, int col, int arc = 360) {
+		/// <param name="c">Character to use.</param>
+		public void Arc(Point pos, int radius, int col, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full) {
 			for (int a = 0; a < arc; a++) {
 				int x = (int)(radius * Math.Cos((float)a / 57.29577f));
 				int y = (int)(radius * Math.Sin((float)a / 57.29577f));
 
 				Point v = new Point(pos.X + x, pos.Y + y);
-				SetPixel(v, ConsoleCharacter.Full, col);
+				SetPixel(v, col, ConsoleCharacter.Full);
 			}
 		}
 
 		/// <summary> Draws a filled Arc. </summary>
 		/// <param name="pos">Center of Arc.</param>
 		/// <param name="radius">Radius of Arc.</param>
-		/// <param name="col">Specified color index.</param>
 		/// <param name="start">Start angle in degrees.</param>
 		/// <param name="arc">End angle in degrees.</param>
-		public void SemiCircle(Point pos, int radius, int col, int start = 0, int arc = 360) {
+		/// <param name="col">Specified color index.</param>
+		/// <param name="c">Character to use.</param>
+		public void SemiCircle(Point pos, int radius, int start, int arc, int col, ConsoleCharacter c = ConsoleCharacter.Full) {
 			for (int a = start; a > -arc + start; a--) {
 				for (int r = 0; r < radius + 1; r++) {
 					int x = (int)(r * Math.Cos((float)a / 57.29577f));
 					int y = (int)(r * Math.Sin((float)a / 57.29577f));
 
 					Point v = new Point(pos.X + x, pos.Y + y);
-					SetPixel(v, ConsoleCharacter.Full, col);
+					SetPixel(v, col, c);
 				}
 			}
 		}
@@ -244,9 +245,9 @@
 		/// <summary> Draws a line from start to end. (Bresenhams Line) </summary>
 		/// <param name="start">Point to draw line from.</param>
 		/// <param name="end">Point to end line at.</param>
-		/// <param name="color">Color to draw with.</param>
+		/// <param name="col">Color to draw with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Line(Point start, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
+		public void Line(Point start, Point end, int col, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Point delta = end - start;
 			Point da = Point.Zero, db = Point.Zero;
 			if (delta.X < 0) da.X = -1; else if (delta.X > 0) da.X = 1;
@@ -265,7 +266,7 @@
 			int numerator = longest >> 1;
 			Point p = new Point(start.X, start.Y);
 			for (int i = 0; i <= longest; i++) {
-				SetPixel(p, c, color);
+				SetPixel(p, col, c);
 				numerator += shortest;
 				if (!(numerator < longest)) {
 					numerator -= longest;
@@ -280,29 +281,44 @@
 		/// <param name="pos">Top Left corner of rectangle.</param>
 		/// <param name="end">Bottom Right corner of rectangle.</param>
 		/// <param name="col">Color to draw with.</param>
-		/// <param name="chr">Character to use.</param>
-		public void Rectangle(Point pos, Point end, int col = 0, ConsoleCharacter chr = ConsoleCharacter.Full) {
+		/// <param name="c">Character to use.</param>
+		public void Rectangle(Point pos, Point end, int col, ConsoleCharacter c = ConsoleCharacter.Full) {
 			for (int i = 0; i < end.X - pos.X; i++) {
-				SetPixel(new Point(pos.X + i, pos.Y), chr, col);
-				SetPixel(new Point(pos.X + i, end.Y), chr, col);
+				SetPixel(new Point(pos.X + i, pos.Y), col, c);
+				SetPixel(new Point(pos.X + i, end.Y), col, c);
 			}
 
 			for (int i = 0; i < end.Y - pos.Y + 1; i++) {
-				SetPixel(new Point(pos.X, pos.Y + i), chr, col);
-				SetPixel(new Point(end.X, pos.Y + i), chr, col);
+				SetPixel(new Point(pos.X, pos.Y + i), col, c);
+				SetPixel(new Point(end.X, pos.Y + i), col, c);
 			}
 		}
 
 		/// <summary> Draws a Rectangle and fills it. </summary>
 		/// <param name="a">Top Left corner of rectangle.</param>
 		/// <param name="b">Bottom Right corner of rectangle.</param>
-		/// <param name="color">Color to draw with.</param>
+		/// <param name="col">Color to draw with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Fill(Point a, Point b, int color, ConsoleCharacter c) {
+		public void Fill(Point a, Point b, int col, ConsoleCharacter c = ConsoleCharacter.Full) {
 			for (int y = a.Y; y < b.Y; y++) {
 				for (int x = a.X; x < b.X; x++) {
-					SetPixel(new Point(x, y), (char)c, color);
+					SetPixel(new Point(x, y), col, c);
 				}
+			}
+		}
+
+		/// <summary> Draws a grid. </summary>
+		/// <param name="a">Top Left corner of grid.</param>
+		/// <param name="b">Bottom Right corner of grid.</param>
+		/// <param name="spacing">the spacing until next line</param>
+		/// <param name="col">Color to draw with.</param>
+		/// <param name="c">Character to use.</param>
+		public void Grid(Point a, Point b, int spacing, int col, ConsoleCharacter c = ConsoleCharacter.Full) {
+			for (int y = a.Y; y < b.Y / spacing; y++) {
+				Line(new Point(a.X, y * spacing), new Point(b.X, y * spacing), col, c);
+			}
+			for (int x = a.X; x < b.X / spacing; x++) {
+				Line(new Point(x * spacing, a.Y), new Point(x * spacing, b.Y), col, c);
 			}
 		}
 
@@ -312,7 +328,7 @@
 		/// <param name="c">Point C.</param>
 		/// <param name="col">Color to draw with.</param>
 		/// <param name="character">Character to use.</param>
-		public void Triangle(Point a, Point b, Point c, int col, ConsoleCharacter character) {
+		public void Triangle(Point a, Point b, Point c, int col, ConsoleCharacter character = ConsoleCharacter.Full) {
 			Line(a, b, col, character);
 			Line(b, c, col, character);
 			Line(c, a, col, character);
@@ -326,7 +342,7 @@
 		/// <param name="c">Point C.</param>
 		/// <param name="col">Color to draw with.</param>
 		/// <param name="character">Character to use.</param>
-		public void FillTriangle(Point a, Point b, Point c, int col, ConsoleCharacter character) {
+		public void FillTriangle(Point a, Point b, Point c, int col, ConsoleCharacter character = ConsoleCharacter.Full) {
 			Point min = new Point(Math.Min(Math.Min(a.X, b.X), c.X), Math.Min(Math.Min(a.Y, b.Y), c.Y));
 			Point max = new Point(Math.Max(Math.Max(a.X, b.X), c.X), Math.Max(Math.Max(a.Y, b.Y), c.Y));
 
@@ -337,7 +353,7 @@
 					int w1 = Orient(c, a, p);
 					int w2 = Orient(a, b, p);
 
-					if (w0 >= 0 && w1 >= 0 && w2 >= 0) SetPixel(p, character, col);
+					if (w0 >= 0 && w1 >= 0 && w2 >= 0) SetPixel(p, col, character);
 				}
 			}
 		}
