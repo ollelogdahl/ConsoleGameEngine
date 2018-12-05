@@ -51,7 +51,7 @@
     <Compile Include="ConsoleBuffer.cs" />
     <Compile Include="ConsoleEngine.cs" />
     <Compile Include="ConsoleEnums.cs" />
-    <Compile Include="ConsoleFontSize.cs" />
+    <Compile Include="ConsoleFont.cs" />
     <Compile Include="ConsoleGame.cs" />
     <Compile Include="ConsoleHelper.cs" />
     <Compile Include="ConsolePalette.cs" />
