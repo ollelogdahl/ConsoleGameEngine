@@ -31,7 +31,7 @@ namespace ConsoleGameEngineExamples {
 		}
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
-			//Engine.Borderless(true);
+			Engine.Borderless(true);
 			Console.Title = "Tetris";
 			TargetFramerate = 16;
 

@@ -20,8 +20,8 @@
 			cfi.dwFontSize.X = sizeX;
 			cfi.dwFontSize.Y = sizeY;
 
-			//throw new Exception(FontFamily.Families.ToString());
-			cfi.FaceName = "Raster";
+			// forcerar font till Terminal (Raster)
+			cfi.FaceName = "Terminal";
 
 			NativeMethods.SetCurrentConsoleFontEx(h, true, ref cfi);
 			return 0;
