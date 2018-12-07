@@ -31,7 +31,7 @@ learning curve. My ambition with this library is to depricate the need for psued
 usually done by moving the cursor, writing a short string and clearing the actual screen. Not only is that 
 solution unintuitive in the long run, but also highly inefficient.
 
-##### Uses
+#### Uses
 - retro-terminal-styled games and applications
 - easy-to-use graphics library for basic and advanced graphics in games and applications
 - ~~Creating heavy 3D graphics running in 4K~~
