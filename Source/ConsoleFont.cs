@@ -19,7 +19,8 @@
 			cfi.dwFontSize.Y = sizeY;
 
 			// sätter font till Terminal (Raster)
-			cfi.FaceName = "Terminal";
+			if (sizeX < 4 || sizeY < 4) cfi.FaceName = "Consolas";
+			else cfi.FaceName = "Terminal";
 
 			NativeMethods.SetCurrentConsoleFontEx(h, false, ref cfi);
 			return 0;

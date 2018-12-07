@@ -40,6 +40,10 @@
 
 			Console.Title = "Untitled console application";
 			Console.CursorVisible = false;
+
+			// sätter fönstret och bufferns storlek
+			// buffern måste sättas efter fönsret, eftersom den aldrig får vara mindre än skärmen
+			Console.SetWindowSize(width, height);
 			Console.SetBufferSize(width, height);
 
 			ConsoleBuffer = new ConsoleBuffer(width, height);
@@ -56,12 +60,9 @@
 			// Stänger av alla standard ConsoleInput metoder (Quick-edit etc)
 			NativeMethods.SetConsoleMode(stdInputHandle, 0x0080);
 
-			// Sätter fontstorlek och tvingar Raster (Terminal)
+			// Sätter fontstorlek och tvingar Raster (Terminal) / Consolas
 			// Detta måste göras efter SetBufferSize, annars ger den en IOException
 			ConsoleFont.SetFont(stdOutputHandle, (short)fontW, (short)fontH);
-			// sätter storleken på fönstret, måste ske efter SetBufferSize för annars
-			// blir fönstret 1 px större (?)
-			Console.SetWindowSize(width, height);
 		}
 
 		// Rita
@@ -104,13 +105,11 @@
 			ConsoleBuffer.Blit();
 		}
 
-		/// <summary> Sets wheather the window should be borderless or not. </summary>
-		/// <param name="b">True if intended to run borderless.</param>
-		public void Borderless(bool b) {
-			IsBorderless = b;
+		/// <summary> Sets the window to borderless mode. </summary>
+		public void Borderless() {
+			IsBorderless = true;
 
 			int GWL_STYLE = -16;                // hex konstant för stil-förändring
-			int WS_DEFAULT = 0x00C00000;        // vanlig
 			int WS_BORDERLESS = 0x00080000;     // helt borderless
 
 			NativeMethods.Rect rect = new NativeMethods.Rect();
@@ -125,13 +124,8 @@
 				(desktopRect.Right / 2) - ((WindowSize.X * FontSize.X) / 2),
 				(desktopRect.Bottom / 2) - ((WindowSize.Y * FontSize.Y) / 2));
 
-			if (b == true) {
-				NativeMethods.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
-				NativeMethods.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
-			} else {
-				NativeMethods.SetWindowLong(consoleHandle, GWL_STYLE, WS_DEFAULT);
-				NativeMethods.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right, rect.Bottom, 0x0040);
-			}
+			NativeMethods.SetWindowLong(consoleHandle, GWL_STYLE, WS_BORDERLESS);
+			NativeMethods.SetWindowPos(consoleHandle, -2, wPos.X, wPos.Y, rect.Right - 8, rect.Bottom - 8, 0x0040);
 
 			NativeMethods.DrawMenuBar(consoleHandle);
 		}

@@ -39,7 +39,7 @@ namespace ConsoleGameEngineExamples {
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
 			Engine.SetBackground(0);
-			Engine.Borderless(true);
+			Engine.Borderless();
 
 			Console.Title = "3D Demo";
 
