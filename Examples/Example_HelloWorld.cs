@@ -16,7 +16,7 @@ namespace ConsoleGameEngineExamples {
 
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
-			Engine.Borderless(true);
+			Engine.Borderless();
 
 			TargetFramerate = 15;
 
