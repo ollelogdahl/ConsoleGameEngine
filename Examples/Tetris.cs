@@ -7,14 +7,17 @@ using System.Threading;
 
 namespace ConsoleGameEngineExamples {
 	class Tetris : ConsoleGame {
-
 		readonly Random rand = new Random();
 		readonly string[] tetromino = new string[7];
+
+		int[] levels;
 
 		int[] playingField;
 
 		static int fieldWidth = 14; static int fieldHeight = 24;
 
+		int lineCount = 0;
+		int frame = 0;
 		int currentTetromino = 0;
 		int rotation = 0;
 		Point current;
@@ -23,17 +26,18 @@ namespace ConsoleGameEngineExamples {
 
 		int highscore = 0;
 		int score = 0;
+		int level = 2;
 
 		bool gameover = false;
 
 		private static void Main(string[] args) {
-			new Tetris().Construct(fieldWidth + 2, fieldHeight + 4, 8, 8, FramerateMode.MaxFps);
+			new Tetris().Construct(fieldWidth + 2, fieldHeight + 6, 16, 16, FramerateMode.MaxFps);
 		}
 		public override void Create() {
 			Engine.SetPalette(Palettes.Pico8);
 			Engine.Borderless();
 			Console.Title = "Tetris";
-			TargetFramerate = 16;
+			TargetFramerate = 50;
 
 			tetromino[0] = "..0...0...0...0.";
 			tetromino[1] = "..1..11...1.....";
@@ -42,6 +46,9 @@ namespace ConsoleGameEngineExamples {
 			tetromino[4] = ".4...44...4.....";
 			tetromino[5] = ".5...5...55.....";
 			tetromino[6] = "..6...6..66.....";
+
+			levels = new int[30] { 48, 43, 38, 33, 28, 23, 18, 13, 8, 6, 5, 5, 5, 4, 4, 4, 3, 3, 3,
+				2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1};
 
 			Restart();
 		}
@@ -55,7 +62,7 @@ namespace ConsoleGameEngineExamples {
 				if (Engine.GetKeyDown(ConsoleKey.LeftArrow)) {
 					current.X -= DoesPieceFit(currentTetromino, rotation, current - new Point(1, 0)) ? 1 : 0;
 				}
-				if (Engine.GetKey(ConsoleKey.DownArrow)) {
+				if (Engine.GetKey(ConsoleKey.DownArrow) && frame % 2 == 0) {
 					current.Y += DoesPieceFit(currentTetromino, rotation, current + new Point(0, 1)) ? 1 : 0;
 				}
 
@@ -63,8 +70,10 @@ namespace ConsoleGameEngineExamples {
 					rotation += DoesPieceFit(currentTetromino, rotation + 1, current) ? 1 : 0;
 				}
 
+				frame++;
+
 				// gör endast denna uppdatering ibland (högre framerate på input)
-				if (FrameCounter % 8 == 0) {
+				if (frame % levels[level] == 0) {
 					// tvingar tetrominon neråt
 					if (DoesPieceFit(currentTetromino, rotation, current + new Point(0, 1))) {
 						current.Y += 1;
@@ -95,8 +104,6 @@ namespace ConsoleGameEngineExamples {
 							}
 						}
 
-						score += 25;
-
 						// gravitation av mappen ifall man gör en rad
 						if (lines.Any()) {
 							for (int line = 0; line < lines.Count; line++) {
@@ -107,8 +114,14 @@ namespace ConsoleGameEngineExamples {
 										else playingField[y * fieldWidth + x] = 0;
 									}
 								}
+							}
 
-								score += 100;
+							lineCount += lines.Count;
+							switch(lines.Count) {
+								case 1: score += 40   * (level + 1); break;
+								case 2: score += 100  * (level + 1); break;
+								case 3: score += 300  * (level + 1); break;
+								case 4: score += 1200 * (level + 1); break;
 							}
 						}
 						lines.Clear();
@@ -162,8 +175,9 @@ namespace ConsoleGameEngineExamples {
 				}
 			}
 			Engine.Frame(new Point(1, 0), new Point(fieldWidth, fieldHeight), 7);
-			Engine.WriteText(new Point(1, fieldHeight+1), "Score", 7);
-			Engine.WriteText(new Point(1, fieldHeight+2), score.ToString("N0"), 9);
+			Engine.WriteText(new Point(2, fieldHeight+1), "Score", 7);
+			Engine.WriteText(new Point(11, fieldHeight+1), score.ToString("N0"), 9);
+			Engine.WriteText(new Point(2, fieldHeight + 2), "Line   " + lineCount.ToString("000"), 7);
 
 			Engine.DisplayBuffer();
 		}

@@ -53,6 +53,7 @@
     <Compile Include="Example_HelloWorld.cs" />
     <Compile Include="Example_3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sokoban.cs" />
     <Compile Include="Tetris.cs" />
   </ItemGroup>
   <ItemGroup>
