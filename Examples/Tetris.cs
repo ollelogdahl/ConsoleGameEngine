@@ -26,7 +26,7 @@ namespace ConsoleGameEngineExamples {
 
 		int highscore = 0;
 		int score = 0;
-		int level = 2;
+		int level = 0;
 
 		bool gameover = false;
 
@@ -62,7 +62,7 @@ namespace ConsoleGameEngineExamples {
 				if (Engine.GetKeyDown(ConsoleKey.LeftArrow)) {
 					current.X -= DoesPieceFit(currentTetromino, rotation, current - new Point(1, 0)) ? 1 : 0;
 				}
-				if (Engine.GetKey(ConsoleKey.DownArrow) && frame % 2 == 0) {
+				if (Engine.GetKey(ConsoleKey.DownArrow) && frame % 3 == 0) {
 					current.Y += DoesPieceFit(currentTetromino, rotation, current + new Point(0, 1)) ? 1 : 0;
 				}
 
@@ -131,6 +131,11 @@ namespace ConsoleGameEngineExamples {
 						rotation = 0;
 						currentTetromino = rand.Next(0, tetromino.Length);
 
+						if(lineCount > 10) {
+							lineCount = 0;
+							level++;
+						}
+
 						// om tetrominon inte får plats direkt förlorar spelaren
 						gameover = !DoesPieceFit(currentTetromino, rotation, current);
 					}
@@ -176,8 +181,11 @@ namespace ConsoleGameEngineExamples {
 			}
 			Engine.Frame(new Point(1, 0), new Point(fieldWidth, fieldHeight), 7);
 			Engine.WriteText(new Point(2, fieldHeight+1), "Score", 7);
-			Engine.WriteText(new Point(11, fieldHeight+1), score.ToString("N0"), 9);
-			Engine.WriteText(new Point(2, fieldHeight + 2), "Line   " + lineCount.ToString("000"), 7);
+			Engine.WriteText(new Point(fieldWidth - score.ToString("N0").Count(), fieldHeight+1), score.ToString("N0"), 9);
+			Engine.WriteText(new Point(2, fieldHeight + 2), "Line", 7);
+			Engine.WriteText(new Point(fieldWidth - score.ToString().Count(), fieldHeight + 2), lineCount.ToString(), 7);
+			Engine.WriteText(new Point(2, fieldHeight + 3), "Level", 7);
+			Engine.WriteText(new Point(fieldWidth - score.ToString().Count(), fieldHeight + 3), level.ToString(), 7);
 
 			Engine.DisplayBuffer();
 		}
