@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using ConsoleGameEngine;
 
-namespace CaveGenerator {
-	class Program : ConsoleGame {
+namespace ConsoleGameEngineExamples {
+	class CaveGenerator : ConsoleGame {
 		static void Main(string[] args) {
-			new Program().Construct(size.X, size.Y + 1, 8, 8, FramerateMode.Unlimited);
+			new CaveGenerator().Construct(size.X, size.Y + 1, 8, 8, FramerateMode.Unlimited);
 		}
 
 		static Point size = new Point(96, 64);
@@ -74,10 +74,10 @@ namespace CaveGenerator {
 			Engine.WriteText(new Point(55, size.Y), $"MN: {min}", 8);
 
 			switch (sel) {
-				case 0: Engine.WriteText(new Point(32, size.Y), $"RFP: {rfp}", 15); break;
-				case 1: Engine.WriteText(new Point(41, size.Y), $"S: {scount}", 15); break;
-				case 2: Engine.WriteText(new Point(48, size.Y), $"MX: {max}", 15); break;
-				case 3: Engine.WriteText(new Point(55, size.Y), $"MN: {min}", 15); break;
+				case 0: Engine.WriteText(new Point(32, size.Y), $"RFP: {rfp}", 12); break;
+				case 1: Engine.WriteText(new Point(41, size.Y), $"S: {scount}", 12); break;
+				case 2: Engine.WriteText(new Point(48, size.Y), $"MX: {max}", 12); break;
+				case 3: Engine.WriteText(new Point(55, size.Y), $"MN: {min}", 12); break;
 
 			}
 
