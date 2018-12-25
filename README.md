@@ -94,6 +94,10 @@ class AppName : ConsoleGame {
 - Press *Delete Key* to close application if running in borderless
 ---
 
+<p align="center">
+  <img src="https://github.com/ollelogdahl/ConsoleGameEngine/blob/master/Media/cave.gif" width = 512 heigth = 384 />
+</p>
+
 ## Links
 
 - [Repository](https://github.com/ollelogdahl/ConsoleGameEngine/)
