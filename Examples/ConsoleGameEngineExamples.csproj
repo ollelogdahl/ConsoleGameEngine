@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ConsoleGameEngineExamples.CaveGenerator</StartupObject>
+    <StartupObject>ConsoleGameEngineExamples.Breakout</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ConsoleGameEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Breakout.cs" />
     <Compile Include="CaveGenerator.cs" />
     <Compile Include="Example_HelloWorld.cs" />
     <Compile Include="Example_3D.cs" />
