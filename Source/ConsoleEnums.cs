@@ -34,21 +34,21 @@
 		/// <summary> Pico8 palette. </summary>
 		public static Color[] Pico8 { get; set; } = new Color[16] {
 			new Color(0,	0,     0),				// Black
-			new Color(29,	43,    83),
-			new Color(126,  37,    83),
-			new Color(0,	135,   81),
-			new Color(171,  82,    54),
-			new Color(95,	87,    79),
-			new Color(194,  195,   199),
-			new Color(255,  241,   232),
-			new Color(255,  0,     77),
-			new Color(255,  163,   0),
-			new Color(255,  236,   39),
-			new Color(0,	228,   54),
-			new Color(41,	173,   255),
-			new Color(131,	118,   156),
-			new Color(255,  119,   168),
-			new Color(255,  204,   170),
+			new Color(29,	43,    83),				//dark blue
+			new Color(126,  37,    83),				//magenta?
+			new Color(0,	135,   81),				//green
+			new Color(171,  82,    54),				//orange?
+			new Color(95,	87,    79),				//brown gray?
+			new Color(194,  195,   199),			//light gray/white?
+			new Color(255,  241,   232),			//whitepink?/ off white
+			new Color(255,  0,     77),				//redpink?
+			new Color(255,  163,   0),				//dark yellow? yellow
+			new Color(255,  236,   39),				//lighter yellow
+			new Color(0,	228,   54),				//lime green
+			new Color(41,	173,   255),			//lighter blue?
+			new Color(131,	118,   156),			//gray purple?
+			new Color(255,  119,   168),			//pink
+			new Color(255,  204,   170),			//skin color(white person)
 		};
 
 		/// <summary> default windows console palette. </summary>
@@ -70,6 +70,24 @@
 			new Color(249,  241,	165),			// Yellow
 			new Color(242,  242,	242),			// White
 		};
-	}
 
+		public static readonly int BLACK = 0;
+		public static readonly int DARK_BLUE = 1;
+		public static readonly int DARK_GREEN = 2;
+		public static readonly int DARK_CYAN = 3;
+		public static readonly int DARK_RED = 4;
+		public static readonly int DARK_MAGENTA = 5;
+		public static readonly int DARK_YELLOW = 6;
+		public static readonly int GRAY = 7;
+		public static readonly int DARK_GRAY = 8;
+		public static readonly int BLUE = 9;
+		public static readonly int GREEN = 10;
+		public static readonly int CYAN = 11;
+		public static readonly int RED = 12;
+		public static readonly int MAGENTA = 13;
+		public static readonly int YELLOW = 14;
+		public static readonly int WHITE = 15;
+
+
+	}
 }
