@@ -383,6 +383,22 @@
 			return (s & 0x8000) > 0;
 		}
 
+		/// <summary> Checks if right mouse button is pressed down. </summary>
+		/// <returns>True if right mouse button is down</returns>
+		public bool GetMouseRight()
+		{
+			short s = NativeMethods.GetAsyncKeyState(0x02);
+			return (s & 0x8000) > 0;
+		}
+
+		/// <summary> Checks if middle mouse button is pressed down. </summary>
+		/// <returns>True if middle mouse button is down</returns>
+		public bool GetMouseMiddle()
+		{
+			short s = NativeMethods.GetAsyncKeyState(0x04);
+			return (s & 0x8000) > 0;
+		}
+
 		/// <summary> Gets the mouse position. </summary>
 		/// <returns>The mouse's position in character-space.</returns>
 		/// <exception cref="Exception"/>
