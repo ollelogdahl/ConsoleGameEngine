@@ -12,6 +12,8 @@
 		public static extern short GetAsyncKeyState(Int32 vKey);
 		[DllImport("user32.dll", SetLastError = true)]
 		public static extern bool GetCursorPos(out POINT vKey);
+		[DllImport("user32.dll", SetLastError = true)]
+		public static extern IntPtr GetForegroundWindow();
 
 
 		[DllImport("user32.dll", SetLastError = true)]

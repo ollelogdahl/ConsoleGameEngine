@@ -25,8 +25,8 @@
 
 		private char[,] CharBuffer { get; set; }
 		private int[,] ColorBuffer { get; set; }
-		private int Background { get; set; }
 		private int[,] BackgroundBuffer { get; set; }
+		private int Background { get; set; }
 		private ConsoleBuffer ConsoleBuffer { get; set; }
 		private bool IsBorderless { get; set; }
 
@@ -42,6 +42,9 @@
 			Console.Title = "Untitled console application";
 			Console.CursorVisible = false;
 
+			//sets console location to 0,0 to try and avoid the error where the console is to big
+			Console.SetWindowPosition(0, 0);
+
 			// sätter fönstret och bufferns storlek
 			// buffern måste sättas efter fönsret, eftersom den aldrig får vara mindre än skärmen
 			Console.SetWindowSize(width, height);
@@ -55,6 +58,7 @@
 			CharBuffer = new char[width, height];
 			ColorBuffer = new int[width, height];
 			BackgroundBuffer = new int[width, height];
+			
 
 			SetBackground(0);
 			SetPalette(Palettes.Default);
@@ -68,7 +72,8 @@
 		}
 
 		// Rita
-		private void SetPixel(Point selectedPoint, int color, char character){
+		private void SetPixel(Point selectedPoint, int color, char character)
+		{
 			SetPixel(selectedPoint,color,Background,character);
 		}
 
@@ -81,6 +86,7 @@
 			ColorBuffer[selectedPoint.X, selectedPoint.Y] = fgColor;
 			BackgroundBuffer[selectedPoint.X, selectedPoint.Y] = bgColor;
 		}
+
 
 		/// <summary> Sets the console's color palette </summary>
 		/// <param name="colors"></param>
@@ -109,7 +115,7 @@
 		}
 
 		/// <summary> Blits the screenbuffer to the Console window. </summary>
-		public void DisplayBuffer(){
+		public void DisplayBuffer() {
 			ConsoleBuffer.SetBuffer(CharBuffer, ColorBuffer, BackgroundBuffer, Background);
 			ConsoleBuffer.Blit();
 		}
@@ -145,8 +151,7 @@
 		/// <param name="v">The Point that should be drawn to.</param>
 		/// <param name="color">The color index.</param>
 		/// <param name="c">The character that should be drawn with.</param>
-		public void SetPixel(Point v, int color, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void SetPixel(Point v, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			SetPixel(v, color, Background, (char)c);
 		}
 
@@ -164,9 +169,8 @@
 		/// <param name="pos">Top Left corner of box.</param>
 		/// <param name="end">Bottom Right corner of box.</param>
 		/// <param name="color">The specified color index.</param>
-		public void Frame(Point pos, Point end, int color)
-		{
-			Frame(pos, end, color, Background);
+		public void Frame(Point pos, Point end, int color) {
+			Frame(pos,end,color,Background);
 		}
 
 		/// <summary> Draws a frame using boxdrawing symbols. </summary>
@@ -196,9 +200,8 @@
 		/// <param name="pos">The position to write to.</param>
 		/// <param name="text">String to write.</param>
 		/// <param name="color">Specified color index to write with.</param>
-		public void WriteText(Point pos, string text, int color)
-		{
-			WriteText(pos, text, color, Background);
+		public void WriteText(Point pos, string text, int color) {
+			WriteText(pos,text,color,Background);
 		}
 
 		/// <summary> Writes plain text to the buffer. </summary>
@@ -209,7 +212,7 @@
 		public void WriteText(Point pos, string text, int fgColor, int bgColor)
 		{
 			for(int i = 0; i < text.Length; i++) {
-				SetPixel(new Point(pos.X + i, pos.Y), fgColor, bgColor, text[i]);
+				SetPixel(new Point(pos.X + i, pos.Y), fgColor,bgColor, text[i]);
 			}
 		}
 
@@ -219,8 +222,7 @@
 		/// <param name="font">FIGLET font to write with.</param>
 		/// <param name="color">Specified color index to write with.</param>
 		/// <see cref="FigletFont"/>
-		public void WriteFiglet(Point pos, string text, FigletFont font, int color)
-		{
+		public void WriteFiglet(Point pos, string text, FigletFont font, int color) {
 			WriteFiglet(pos, text, font, color, Background);
 		}
 
@@ -246,7 +248,7 @@
 					string fragment = FigletFont.GetCharacter(font, character, line);
 					for(int f = 0; f < fragment.Length; f++) {
 						if(fragment[f] != ' ') {
-							SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), fgColor, bgColor, fragment[f]);
+							SetPixel(new Point(pos.X + runningWidthTotal + f, pos.Y + line - 1), fgColor,bgColor, fragment[f]);
 						}
 					}
 					runningWidthTotal += fragment.Length;
@@ -260,8 +262,7 @@
 		/// <param name="color">Specified color index.</param>
 		/// <param name="arc">angle in degrees, 360 if not specified.</param>
 		/// <param name="c">Character to use.</param>
-		public void Arc(Point pos, int radius, int color, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void Arc(Point pos, int radius, int color, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Arc(pos, radius, color, Background, arc, c);
 		}
 
@@ -279,7 +280,7 @@
 				int y = (int)(radius * Math.Sin((float)a / 57.29577f));
 
 				Point v = new Point(pos.X + x, pos.Y + y);
-				SetPixel(v, fgColor, bgColor, ConsoleCharacter.Full);
+				SetPixel(v, fgColor,bgColor, ConsoleCharacter.Full);
 			}
 		}
 
@@ -290,8 +291,7 @@
 		/// <param name="arc">End angle in degrees.</param>
 		/// <param name="color">Specified color index.</param>
 		/// <param name="c">Character to use.</param>
-		public void SemiCircle(Point pos, int radius, int start, int arc, int color, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void SemiCircle(Point pos, int radius, int start, int arc, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			SemiCircle(pos, radius, start, arc, color, Background, c);
 		}
 
@@ -303,7 +303,7 @@
 		/// <param name="fgColor">Specified color index.</param>
 		/// <param name="bgColor">Specified background color index.</param>
 		/// <param name="c">Character to use.</param>
-		public void SemiCircle(Point pos, int radius, int start, int arc, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+		public void SemiCircle(Point pos, int radius, int start, int arc, int fgColor,int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			for(int a = start; a > -arc + start; a--) {
 				for(int r = 0; r < radius + 1; r++) {
@@ -311,7 +311,7 @@
 					int y = (int)(r * Math.Sin((float)a / 57.29577f));
 
 					Point v = new Point(pos.X + x, pos.Y + y);
-					SetPixel(v, fgColor, bgColor, c);
+					SetPixel(v, fgColor,bgColor, c);
 				}
 			}
 		}
@@ -323,8 +323,7 @@
 		/// <param name="end">Point to end line at.</param>
 		/// <param name="color">Color to draw with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Line(Point start, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void Line(Point start, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Line(start, end, color, Background, c);
 		}
 
@@ -336,7 +335,7 @@
 		/// <param name="fgColor">Color to draw with.</param>
 		/// <param name="bgColor">Color to draw the background with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Line(Point start, Point end, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+		public void Line(Point start, Point end, int fgColor,int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			Point delta = end - start;
 			Point da = Point.Zero, db = Point.Zero;
@@ -356,7 +355,7 @@
 			int numerator = longest >> 1;
 			Point p = new Point(start.X, start.Y);
 			for(int i = 0; i <= longest; i++) {
-				SetPixel(p, fgColor, bgColor, c);
+				SetPixel(p, fgColor,bgColor, c);
 				numerator += shortest;
 				if(!(numerator < longest)) {
 					numerator -= longest;
@@ -373,8 +372,7 @@
 		/// <param name="end">Bottom Right corner of rectangle.</param>
 		/// <param name="color">Color to draw with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Rectangle(Point pos, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void Rectangle(Point pos, Point end, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Rectangle(pos, end, color, Background, c);
 		}
 
@@ -384,10 +382,10 @@
 		/// <param name="fgColor">Color to draw with.</param>
 		/// <param name="bgColor">Color to draw to the background with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Rectangle(Point pos, Point end, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+		public void Rectangle(Point pos, Point end, int fgColor,int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			for(int i = 0; i < end.X - pos.X; i++) {
-				SetPixel(new Point(pos.X + i, pos.Y), fgColor, bgColor, c);
+				SetPixel(new Point(pos.X + i, pos.Y), fgColor,bgColor, c);
 				SetPixel(new Point(pos.X + i, end.Y), fgColor, bgColor, c);
 			}
 
@@ -402,8 +400,7 @@
 		/// <param name="b">Bottom Right corner of rectangle.</param>
 		/// <param name="color">Color to draw with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Fill(Point a, Point b, int color, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void Fill(Point a, Point b, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Fill(a, b, color, Background, c);
 		}
 
@@ -413,11 +410,11 @@
 		/// <param name="fgColor">Color to draw with.</param>
 		/// <param name="bgColor">Color to draw the background with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Fill(Point a, Point b, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+		public void Fill(Point a, Point b, int fgColor,int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			for(int y = a.Y; y < b.Y; y++) {
 				for(int x = a.X; x < b.X; x++) {
-					SetPixel(new Point(x, y), fgColor, bgColor, c);
+					SetPixel(new Point(x, y), fgColor,bgColor, c);
 				}
 			}
 		}
@@ -428,8 +425,7 @@
 		/// <param name="spacing">the spacing until next line</param>
 		/// <param name="color">Color to draw with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Grid(Point a, Point b, int spacing, int color, ConsoleCharacter c = ConsoleCharacter.Full)
-		{
+		public void Grid(Point a, Point b, int spacing, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Grid(a, b, spacing, color, Background, c);
 		}
 
@@ -440,10 +436,10 @@
 		/// <param name="fgColor">Color to draw with.</param>
 		/// <param name="bgColor">Color to draw the background with.</param>
 		/// <param name="c">Character to use.</param>
-		public void Grid(Point a, Point b, int spacing, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+		public void Grid(Point a, Point b, int spacing, int fgColor,int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			for(int y = a.Y; y < b.Y / spacing; y++) {
-				Line(new Point(a.X, y * spacing), new Point(b.X, y * spacing), fgColor, bgColor, c);
+				Line(new Point(a.X, y * spacing), new Point(b.X, y * spacing), fgColor,bgColor, c);
 			}
 			for(int x = a.X; x < b.X / spacing; x++) {
 				Line(new Point(x * spacing, a.Y), new Point(x * spacing, b.Y), fgColor, bgColor, c);
@@ -456,9 +452,8 @@
 		/// <param name="c">Point C.</param>
 		/// <param name="color">Color to draw with.</param>
 		/// <param name="character">Character to use.</param>
-		public void Triangle(Point a, Point b, Point c, int color, ConsoleCharacter character = ConsoleCharacter.Full)
-		{
-			Triangle(a, b, c, color, Background, character);
+		public void Triangle(Point a, Point b, Point c, int color, ConsoleCharacter character = ConsoleCharacter.Full) {
+			Triangle(a,b,c,color,Background,character);
 		}
 
 		/// <summary> Draws a Triangle. </summary>
@@ -468,9 +463,9 @@
 		/// <param name="fgColor">Color to draw with.</param>
 		/// <param name="bgColor">Color to draw to the background with.</param>
 		/// <param name="character">Character to use.</param>
-		public void Triangle(Point a, Point b, Point c, int fgColor, int bgColor, ConsoleCharacter character = ConsoleCharacter.Full)
+		public void Triangle(Point a, Point b, Point c, int fgColor,int bgColor, ConsoleCharacter character = ConsoleCharacter.Full)
 		{
-			Line(a, b, fgColor, bgColor, character);
+			Line(a, b, fgColor,bgColor, character);
 			Line(b, c, fgColor, bgColor, character);
 			Line(c, a, fgColor, bgColor, character);
 		}
@@ -483,8 +478,7 @@
 		/// <param name="c">Point C.</param>
 		/// <param name="color">Color to draw with.</param>
 		/// <param name="character">Character to use.</param>
-		public void FillTriangle(Point a, Point b, Point c, int color, ConsoleCharacter character = ConsoleCharacter.Full)
-		{
+		public void FillTriangle(Point a, Point b, Point c, int color, ConsoleCharacter character = ConsoleCharacter.Full) {
 			FillTriangle(a, b, c, color, Background, character);
 		}
 
@@ -507,13 +501,12 @@
 					int w1 = Orient(c, a, p);
 					int w2 = Orient(a, b, p);
 
-					if(w0 >= 0 && w1 >= 0 && w2 >= 0) SetPixel(p, fgColor, bgColor, character);
+					if(w0 >= 0 && w1 >= 0 && w2 >= 0) SetPixel(p, fgColor,bgColor, character);
 				}
 			}
 		}
 
-		private int Orient(Point a, Point b, Point c)
-		{
+		private int Orient(Point a, Point b, Point c) {
 			return ((b.X - a.X) * (c.Y - a.Y)) - ((b.Y - a.Y) * (c.X - a.X));
 		}
 
@@ -521,12 +514,19 @@
 
 		// Input
 
+		/// <summary>Checks to see if the console is in focus </summary>
+		/// <returns>True if Console is in focus</returns>
+		private bool ConsoleFocused()
+		{
+			return NativeMethods.GetConsoleWindow() == NativeMethods.GetForegroundWindow();
+		}
+
 		/// <summary> Checks if specified key is pressed. </summary>
 		/// <param name="key">The key to check.</param>
 		/// <returns>True if key is pressed</returns>
 		public bool GetKey(ConsoleKey key) {
 			short s = NativeMethods.GetAsyncKeyState((int)key);
-			return (s & 0x8000) > 0;
+			return (s & 0x8000) > 0 && ConsoleFocused();
 		}
 
 		/// <summary> Checks if specified key is pressed down. </summary>
@@ -534,14 +534,14 @@
 		/// <returns>True if key is down</returns>
 		public bool GetKeyDown(ConsoleKey key) {
 			int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState((int)key));
-			return (s == -32767);
+			return (s == -32767) && ConsoleFocused();
 		}
 
 		/// <summary> Checks if left mouse button is pressed down. </summary>
 		/// <returns>True if left mouse button is down</returns>
 		public bool GetMouseLeft() {
 			short s = NativeMethods.GetAsyncKeyState(0x01);
-			return (s & 0x8000) > 0;
+			return (s & 0x8000) > 0 && ConsoleFocused();
 		}
 
 		/// <summary> Checks if right mouse button is pressed down. </summary>
@@ -549,7 +549,7 @@
 		public bool GetMouseRight()
 		{
 			short s = NativeMethods.GetAsyncKeyState(0x02);
-			return (s & 0x8000) > 0;
+			return (s & 0x8000) > 0 && ConsoleFocused();
 		}
 
 		/// <summary> Checks if middle mouse button is pressed down. </summary>
@@ -557,7 +557,7 @@
 		public bool GetMouseMiddle()
 		{
 			short s = NativeMethods.GetAsyncKeyState(0x04);
-			return (s & 0x8000) > 0;
+			return (s & 0x8000) > 0 && ConsoleFocused();
 		}
 
 		/// <summary> Gets the mouse position. </summary>
