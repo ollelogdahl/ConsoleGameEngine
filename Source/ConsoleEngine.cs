@@ -47,8 +47,10 @@
 
 			// sätter fönstret och bufferns storlek
 			// buffern måste sättas efter fönsret, eftersom den aldrig får vara mindre än skärmen
+			Console.WindowLeft = 0;
+			Console.WindowTop = 0;
 			Console.SetWindowSize(width, height);
-			Console.SetBufferSize(width, height);
+			Console.SetBufferSize(width+1, height+1);
 
 			ConsoleBuffer = new ConsoleBuffer(width, height);
 
@@ -105,6 +107,13 @@
 		public void SetBackground(int color = 0) {
 			if (color > 16 || color < 0) throw new IndexOutOfRangeException();
 			Background = color;
+		}
+
+		/// <summary>Gets Background</summary>
+		/// <returns>Returns the background</returns>
+		public int GetBackground()
+		{
+			return Background;
 		}
 
 		/// <summary> Clears the screenbuffer. </summary>
@@ -529,11 +538,29 @@
 			return (s & 0x8000) > 0 && ConsoleFocused();
 		}
 
+		/// <summary> Checks if specified keyCode is pressed. </summary>
+		/// <param name="virtualkeyCode">keycode to check</param>
+		/// <returns>True if key is pressed</returns>
+		public bool GetKey(int virtualkeyCode)
+		{
+			short s = NativeMethods.GetAsyncKeyState(virtualkeyCode);
+			return (s & 0x8000) > 0 && ConsoleFocused();
+		}
+
 		/// <summary> Checks if specified key is pressed down. </summary>
 		/// <param name="key">The key to check.</param>
 		/// <returns>True if key is down</returns>
 		public bool GetKeyDown(ConsoleKey key) {
 			int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState((int)key));
+			return (s == -32767) && ConsoleFocused();
+		}
+
+		/// <summary> Checks if specified keyCode is pressed down. </summary>
+		/// <param name="virtualkeyCode">keycode to check</param>
+		/// <returns>True if key is down</returns>
+		public bool GetKeyDown(int virtualkeyCode)
+		{
+			int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState(virtualkeyCode));
 			return (s == -32767) && ConsoleFocused();
 		}
 
