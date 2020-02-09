@@ -47,10 +47,8 @@
 
 			// sätter fönstret och bufferns storlek
 			// buffern måste sättas efter fönsret, eftersom den aldrig får vara mindre än skärmen
-			Console.WindowLeft = 0;
-			Console.WindowTop = 0;
 			Console.SetWindowSize(width, height);
-			Console.SetBufferSize(width+1, height+1);
+			Console.SetBufferSize(width, height);
 
 			ConsoleBuffer = new ConsoleBuffer(width, height);
 
