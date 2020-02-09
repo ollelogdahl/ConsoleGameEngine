@@ -14,8 +14,14 @@
 
 		/// <summary> A counter representing the current unique frame we're at. </summary>
 		public int FrameCounter { get; set; }
+
+		/// <summary> A counter representing the total frames since launch</summary>
+		public int FrameTotal { get; private set; }
 		/// <summary> Factor for generating framerate-independent physics. time between last frame and current. </summary>
 		public float DeltaTime { get; set; }
+
+		/// <summary>The time the program started in DateTime, set after Create()</summary>
+		public DateTime StartTime { get; private set; }
 
 		/// <summary> The framerate the engine is trying to run at. </summary>
 		public int TargetFramerate { get; set; }
@@ -37,6 +43,7 @@
 
 			Engine = new ConsoleEngine(width, height, fontW, fontH);
 			Create();
+			StartTime = DateTime.Now;
 
 			if (m == FramerateMode.Unlimited) gameThread = new Thread(new ThreadStart(GameLoopUnlimited));
 			if (m == FramerateMode.MaxFps) gameThread = new Thread(new ThreadStart(GameLoopLocked));
@@ -73,6 +80,9 @@
 					Thread.Sleep(sleepDuration);
 				}
 
+				//increases total frames
+				FrameTotal++;
+
 				// beräknar framerate
 				TimeSpan diff = DateTime.UtcNow - lastTime;
 				DeltaTime = (float)(1 / (TargetFramerate * diff.TotalSeconds));
@@ -94,6 +104,9 @@
 
 				Update();
 				Render();
+
+				//increases total frames
+				FrameTotal++;
 
 				// beräknar framerate
 				TimeSpan diff = DateTime.UtcNow - lastTime;
