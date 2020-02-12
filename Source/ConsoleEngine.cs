@@ -72,13 +72,13 @@
 		}
 
 		// Rita
-		private void SetPixel(Point selectedPoint, int color, char character)
+		public void SetPixel(Point selectedPoint, int color, char character)
 		{
 			SetPixel(selectedPoint,color,Background,character);
 		}
 
 		//new Draw method, which supports background
-		private void SetPixel(Point selectedPoint, int fgColor, int bgColor, char character) {
+		public void SetPixel(Point selectedPoint, int fgColor, int bgColor, char character) {
 			if (selectedPoint.X >= CharBuffer.GetLength(0) || selectedPoint.Y >= CharBuffer.GetLength(1)
 				|| selectedPoint.X < 0 || selectedPoint.Y < 0) return;
 
