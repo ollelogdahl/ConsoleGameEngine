@@ -23,9 +23,10 @@
 		/// <summary> The dimensions of the window in characters. </summary> <see cref="Point"/>
 		public Point WindowSize { get; private set; }
 
-		private char[,] CharBuffer { get; set; }
+		/*private char[,] CharBuffer { get; set; }
 		private int[,] ColorBuffer { get; set; }
-		private int[,] BackgroundBuffer { get; set; }
+		private int[,] BackgroundBuffer { get; set; }*/
+		private Glyph[,] GlyphBuffer { get; set; }  
 		private int Background { get; set; }
 		private ConsoleBuffer ConsoleBuffer { get; set; }
 		private bool IsBorderless { get; set; }
@@ -55,9 +56,11 @@
 			WindowSize = new Point(width, height);
 			FontSize = new Point(fontW, fontH);
 
-			CharBuffer = new char[width, height];
+			/*CharBuffer = new char[width, height];
 			ColorBuffer = new int[width, height];
-			BackgroundBuffer = new int[width, height];
+			BackgroundBuffer = new int[width, height];*/
+
+			GlyphBuffer = new Glyph[width, height];
 			
 
 			SetBackground(0);
@@ -79,12 +82,25 @@
 
 		//new Draw method, which supports background
 		public void SetPixel(Point selectedPoint, int fgColor, int bgColor, char character) {
-			if (selectedPoint.X >= CharBuffer.GetLength(0) || selectedPoint.Y >= CharBuffer.GetLength(1)
+			if (selectedPoint.X >= GlyphBuffer.GetLength(0) || selectedPoint.Y >= GlyphBuffer.GetLength(1)
 				|| selectedPoint.X < 0 || selectedPoint.Y < 0) return;
 
-			CharBuffer[selectedPoint.X, selectedPoint.Y] = character;
+			/*CharBuffer[selectedPoint.X, selectedPoint.Y] = character;
 			ColorBuffer[selectedPoint.X, selectedPoint.Y] = fgColor;
-			BackgroundBuffer[selectedPoint.X, selectedPoint.Y] = bgColor;
+			BackgroundBuffer[selectedPoint.X, selectedPoint.Y] = bgColor;*/
+			GlyphBuffer[selectedPoint.X, selectedPoint.Y].set(character, fgColor, bgColor);
+		}
+
+		/// <summary>
+		/// returns gylfh at point given
+		/// </summary>
+		/// <param name="selectedPoint"></param>
+		/// <returns></returns>
+		public Glyph PixelAt(Point selectedPoint)
+		{
+			if(selectedPoint.X > 0 && selectedPoint.X < GlyphBuffer.GetLength(0) && selectedPoint.Y > 0 && selectedPoint.Y < GlyphBuffer.GetLength(1))
+				return GlyphBuffer[selectedPoint.X, selectedPoint.Y];
+			else return null;
 		}
 
 
@@ -116,14 +132,15 @@
 
 		/// <summary> Clears the screenbuffer. </summary>
 		public void ClearBuffer() {
-			Array.Clear(CharBuffer, 0, CharBuffer.Length);
+			/*Array.Clear(CharBuffer, 0, CharBuffer.Length);
 			Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
-			Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);
+			Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);*/
+			Array.Clear(GlyphBuffer, 0, GlyphBuffer.Length);
 		}
 
 		/// <summary> Blits the screenbuffer to the Console window. </summary>
 		public void DisplayBuffer() {
-			ConsoleBuffer.SetBuffer(CharBuffer, ColorBuffer, BackgroundBuffer, Background);
+			ConsoleBuffer.SetBuffer(GlyphBuffer, Background);
 			ConsoleBuffer.Blit();
 		}
 
