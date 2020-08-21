@@ -19,26 +19,25 @@
 				CharInfoBuffer = new NativeMethods.CharInfo[width * height];
 			}
 		}
-
 		/// <summary>
 		/// Sets the buffer to values
 		/// </summary>
+		/// <param name="GlyphBuffer"></param>
 		/// <param name="charBuffer"> array of chars which get added to the buffer</param>
 		/// <param name="colorBuffer"> array of foreground(front)colors which get added to the buffer</param>
 		/// <param name="background"> array of background colors which get added to the buffer</param>
 		/// <param name="defualtBackground"> default color(may reduce fps?), this is the background color
 		///									null chars will get set to this default background</param>
-		public void SetBuffer(char[,] charBuffer, int[,] colorBuffer, int[,] background, int defualtBackground)
-		{
-			for(int y = 0; y < height; y++) {
-				for(int x = 0; x < width; x++) {
+		public void SetBuffer(Glyph[,] GlyphBuffer, int defualtBackground) {
+			for (int y = 0; y < height; y++) {
+				for (int x = 0; x < width; x++) {
 					int i = (y * width) + x;
 
-					if(charBuffer[x, y] == 0)
-						background[x, y] = defualtBackground;
+					if(GlyphBuffer[x, y].c == 0)
+						GlyphBuffer[x, y].bg = defualtBackground;
 
-					CharInfoBuffer[i].Attributes = (short)(colorBuffer[x, y] | (background[x, y] << 4));
-					CharInfoBuffer[i].UnicodeChar = charBuffer[x, y];
+					CharInfoBuffer[i].Attributes = (short)(GlyphBuffer[x, y].fg |(GlyphBuffer[x,y].bg << 4) );
+					CharInfoBuffer[i].UnicodeChar = GlyphBuffer[x, y].c;
 				}
 			}
 		}

@@ -61,10 +61,6 @@
 			BackgroundBuffer = new int[width, height];*/
 
 			GlyphBuffer = new Glyph[width, height];
-			for(int y = 0; y < GlyphBuffer.GetLength(1); y++)
-				for(int x = 0; x < GlyphBuffer.GetLength(0); x++)
-					GlyphBuffer[x, y] = new Glyph();
-
 			
 
 			SetBackground(0);
