@@ -67,6 +67,12 @@ namespace ConsoleGameEngine {
 		{
 			return a.X > b.X && a.Y > b.Y;
 		}
+		public override bool Equals(object obj) {
+			return Equals(obj);
+		}
+		public override int GetHashCode() {
+			return GetHashCode();
+		}
 
 		/// <summary> Calculates distance between two points. </summary>
 		/// <param name="a">Point A</param>
