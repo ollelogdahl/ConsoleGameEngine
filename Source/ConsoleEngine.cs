@@ -323,8 +323,6 @@
 		/// <param name="arcEnd">End angle in degrees. Drawing happens counterclockwise.</param>
 		/// <param name="fgColor">Specified foreground color index.</param>
 		/// <param name="c">Character to use.</param>
-		/// <remarks>Will draws entire <c>Arc2</c> if <paramref name="arcStart"/> and <paramref name="arcEnd"/>
-		/// normalized forms have same value.</remarks>
 		// TODO: Arc and Sector have too many integers in a row - turn either color or start/end into a object
 		public void Arc2(Point pos, int radius, int arcStart, int arcEnd, int fgColor, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Arc2(pos, radius, arcStart, arcEnd, fgColor, Background, c);
@@ -338,8 +336,6 @@
 		/// <param name="fgColor">Specified foreground color index.</param>
 		/// <param name="bgColor">Specified background color index.</param>
 		/// <param name="c">Character to use.</param>
-		/// <remarks>Will draws entire <c>Arc2</c> if <paramref name="arcStart"/> and <paramref name="arcEnd"/>
-		/// normalized forms have same value.</remarks>
 		public void Arc2(Point pos, int radius, int arcStart, int arcEnd, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			ArcSectorCommon(pos, radius, arcStart, arcEnd, fgColor,  bgColor, c);
@@ -409,8 +405,6 @@
 		/// <param name="bgColor">Specified background color index.</param>
 		/// <param name="c">Character to use.</param>
 		/// <param name="willDrawOnFullRotation">Will draw sector when both degrees have the same normalized value. Ex 0 and 360</param>
-		/// <remarks>Will draw nothing if <paramref name="sectorStart"/> and <paramref name="sectorEnd"/>
-		/// normalized forms have same value.</remarks>
 		public void Sector(Point pos, int radius, int sectorStart, int sectorEnd, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full, bool willDrawOnFullRotation = false)
 		{
 			int arcStartNorm = sectorStart;
