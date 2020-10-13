@@ -62,5 +62,11 @@
     <None Include="App.config" />
     <None Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Source\ConsoleGameEngine.csproj">
+      <Project>{7af47a03-fabf-458b-be6f-4f8bef89a7e6}</Project>
+      <Name>ConsoleGameEngine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

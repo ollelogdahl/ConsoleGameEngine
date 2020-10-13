@@ -8,6 +8,7 @@
 	/// </summary>
 	public class ConsoleEngine {
 
+		// English please!
 		// pekare för ConsoleHelper-anrop
 		private readonly IntPtr stdInputHandle = NativeMethods.GetStdHandle(-10);
 		private readonly IntPtr stdOutputHandle = NativeMethods.GetStdHandle(-11);
@@ -96,7 +97,7 @@
 		}
 
 		/// <summary>
-		/// returns gylfh at point given
+		/// returns glyph at point given
 		/// </summary>
 		/// <param name="selectedPoint"></param>
 		/// <returns></returns>
@@ -266,13 +267,14 @@
 			if(text == null) throw new ArgumentNullException(nameof(text));
 			if(Encoding.UTF8.GetByteCount(text) != text.Length) throw new ArgumentException("String contains non-ascii characters");
 
-			int sWidth = FigletFont.GetStringWidth(font, text);
+			int sWidth = FigletFont.GetStringWidth(font, text);		// unused ?
 
-			for(int line = 1; line <= font.Height; line++) {
+			for(int line = 1; line <= font.Height; line++)
+			{
 				int runningWidthTotal = 0;
 
-				for(int c = 0; c < text.Length; c++) {
-					char character = text[c];
+				foreach (var character in text)
+				{
 					string fragment = FigletFont.GetCharacter(font, character, line);
 					for(int f = 0; f < fragment.Length; f++) {
 						if(fragment[f] != ' ') {
@@ -290,6 +292,7 @@
 		/// <param name="color">Specified color index.</param>
 		/// <param name="arc">angle in degrees, 360 if not specified.</param>
 		/// <param name="c">Character to use.</param>
+		[Obsolete("For comparison purposes with Arc2. Delete later. Rename new to Arc.")]
 		public void Arc(Point pos, int radius, int color, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full) {
 			Arc(pos, radius, color, Background, arc, c);
 		}
@@ -301,6 +304,7 @@
 		/// <param name="bgColor">Specified background color index.</param>
 		/// <param name="arc">angle in degrees, 360 if not specified.</param>
 		/// <param name="c">Character to use.</param>
+		[Obsolete("For comparison purposes with Arc2. Delete later. Rename new to Arc.")]
 		public void Arc(Point pos, int radius, int fgColor, int bgColor, int arc = 360, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			for(int a = 0; a < arc; a++) {
@@ -312,6 +316,35 @@
 			}
 		}
 
+		/// <summary> Draws an Arc, calls new method with Background as the bgColor. </summary>
+		/// <param name="pos">Center of Arc.</param>
+		/// <param name="radius">Radius of Arc.</param>
+		/// <param name="arcStart">Start angle in degrees. Drawing happens counterclockwise.</param>
+		/// <param name="arcEnd">End angle in degrees. Drawing happens counterclockwise.</param>
+		/// <param name="fgColor">Specified foreground color index.</param>
+		/// <param name="c">Character to use.</param>
+		/// <remarks>Will draws entire <c>Arc2</c> if <paramref name="arcStart"/> and <paramref name="arcEnd"/>
+		/// normalized forms have same value.</remarks>
+		// TODO: Arc and Sector have too many integers in a row - turn either color or start/end into a object
+		public void Arc2(Point pos, int radius, int arcStart, int arcEnd, int fgColor, ConsoleCharacter c = ConsoleCharacter.Full) {
+			Arc2(pos, radius, arcStart, arcEnd, fgColor, Background, c);
+		}
+
+		/// <summary> Draws an Arc. </summary>
+		/// <param name="pos">Center of Arc.</param>
+		/// <param name="radius">Radius of Arc.</param>
+		/// <param name="arcStart">Start angle in degrees. Drawing happens counterclockwise.</param>
+		/// <param name="arcEnd">End angle in degrees. Drawing happens counterclockwise.</param>
+		/// <param name="fgColor">Specified foreground color index.</param>
+		/// <param name="bgColor">Specified background color index.</param>
+		/// <param name="c">Character to use.</param>
+		/// <remarks>Will draws entire <c>Arc2</c> if <paramref name="arcStart"/> and <paramref name="arcEnd"/>
+		/// normalized forms have same value.</remarks>
+		public void Arc2(Point pos, int radius, int arcStart, int arcEnd, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
+		{
+			ArcSectorCommon(pos, radius, arcStart, arcEnd, fgColor,  bgColor, c);
+		}
+
 		/// <summary> Draws a filled Arc, calls new method with Background as the bgColor </summary>
 		/// <param name="pos">Center of Arc.</param>
 		/// <param name="radius">Radius of Arc.</param>
@@ -319,6 +352,7 @@
 		/// <param name="arc">End angle in degrees.</param>
 		/// <param name="color">Specified color index.</param>
 		/// <param name="c">Character to use.</param>
+		[Obsolete("For comparison purposes with Sector. Delete later. This is not even a semicircle.")]
 		public void SemiCircle(Point pos, int radius, int start, int arc, int color, ConsoleCharacter c = ConsoleCharacter.Full) {
 			SemiCircle(pos, radius, start, arc, color, Background, c);
 		}
@@ -331,6 +365,7 @@
 		/// <param name="fgColor">Specified color index.</param>
 		/// <param name="bgColor">Specified background color index.</param>
 		/// <param name="c">Character to use.</param>
+		[Obsolete("For comparison purposes with Sector. Delete later")]
 		public void SemiCircle(Point pos, int radius, int start, int arc, int fgColor,int bgColor, ConsoleCharacter c = ConsoleCharacter.Full)
 		{
 			for(int a = start; a > -arc + start; a--) {
@@ -338,9 +373,92 @@
 					int x = (int)(r * Math.Cos((float)a / 57.29577f));
 					int y = (int)(r * Math.Sin((float)a / 57.29577f));
 
-					Point v = new Point(pos.X + x, pos.Y + y);
-					SetPixel(v, fgColor,bgColor, c);
+					Point v = new Point(pos.X + x, pos.Y + y);	// should be pos.Y - y
+					SetPixel(v, fgColor, bgColor, c);
 				}
+			}
+		}
+		
+		/// <summary> Draws a Circle. </summary>
+		/// <param name="pos">Center of Sector.</param>
+		/// <param name="radius">Radius of Sector.</param>
+		/// <param name="fgColor">Specified foreground color index.</param>
+		/// <param name="bgColor">Specified background color index.</param>
+		/// <param name="c">Character to use.</param>
+		public void Circle(Point pos, int radius, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full) {
+			Sector(pos, radius, 1, 360, fgColor, bgColor, c);
+		}
+
+		/// <summary> Draws a Sector/filled Arc, calls new method with Background as the bgColor </summary>
+		/// <param name="pos">Center of Sector.</param>
+		/// <param name="radius">Radius of Sector.</param>
+		/// <param name="sectorStart">Start angle in degrees. Drawing happens counterclockwise</param>
+		/// <param name="sectorEnd">End angle in degrees. Drawing happens counterclockwise</param>
+		/// <param name="fgColor">Specified foreground color index.</param>
+		/// <param name="c">Character to use.</param>
+		public void Sector(Point pos, int radius, int sectorStart, int sectorEnd, int fgColor, ConsoleCharacter c = ConsoleCharacter.Full) {
+			Sector(pos, radius, sectorStart, sectorEnd, fgColor, Background, c);
+		}
+
+		/// <summary> Draws a Sector/filled Arc.</summary>
+		/// <param name="pos">Center of Sector.</param>
+		/// <param name="radius">Radius of Sector.</param>
+		/// <param name="sectorStart">Start angle in degrees. Drawing happens counterclockwise</param>
+		/// <param name="sectorEnd">End angle in degrees. Drawing happens counterclockwise</param>
+		/// <param name="fgColor">Specified foreground color index.</param>
+		/// <param name="bgColor">Specified background color index.</param>
+		/// <param name="c">Character to use.</param>
+		/// <param name="willDrawOnFullRotation">Will draw sector when both degrees have the same normalized value. Ex 0 and 360</param>
+		/// <remarks>Will draw nothing if <paramref name="sectorStart"/> and <paramref name="sectorEnd"/>
+		/// normalized forms have same value.</remarks>
+		public void Sector(Point pos, int radius, int sectorStart, int sectorEnd, int fgColor, int bgColor, ConsoleCharacter c = ConsoleCharacter.Full, bool willDrawOnFullRotation = false)
+		{
+			int arcStartNorm = sectorStart;
+			int arcEndNorm = sectorEnd;
+			
+			arcStartNorm %= 360;
+			arcEndNorm %= 360;
+			
+			if (arcStartNorm < 1) { arcStartNorm += 360; }
+			if (arcEndNorm < 1) { arcEndNorm += 360; }
+			
+			int loopLimit = arcEndNorm >= arcStartNorm ? arcEndNorm : 360 + arcEndNorm;
+
+			if (arcStartNorm == arcEndNorm && willDrawOnFullRotation)
+			{
+				loopLimit += 360;
+			}
+			
+			for (int r = 0; r < radius + 1; r++)
+			{
+				ArcSectorCommon(pos, r,  arcStartNorm, loopLimit, fgColor, bgColor, c);
+			}
+		}
+
+		/// <summary> Draws an Arc. </summary>
+		/// <param name="pos">Center of Arc.</param>
+		/// <param name="radius">Radius of Arc.</param>
+		/// <param name="arcStart">Start angle in degrees. Drawing happens counterclockwise.</param>
+		/// <param name="arcEnd">End angle in degrees. Drawing happens counterclockwise.</param>
+		/// <param name="fgColor">Specified foreground color index.</param>
+		/// <param name="bgColor">Specified background color index.</param>
+		/// <param name="c">Character to use.</param>
+		private void ArcSectorCommon(Point pos, int radius, int arcStart, int arcEnd, int fgColor, int bgColor, ConsoleCharacter c)
+		{
+			int arcStartNorm = arcStart;
+			int arcEndNorm = arcEnd;
+			if (arcStartNorm == 0)	// will create extra pixel at middle-right if a = 0, a = 360 does not have this problem
+			{
+				arcStartNorm++;
+				arcEndNorm++;
+			}
+			
+			for(int a = arcStartNorm; a < arcEndNorm; a++) {
+				int x = (int)(radius * Math.Cos(a / 57.29577f));
+				int y = (int)(radius * Math.Sin(a / 57.29577f));
+
+				Point v = new Point(pos.X + x, pos.Y - y);
+				SetPixel(v, fgColor,bgColor, c);
 			}
 		}
 
@@ -575,11 +693,11 @@
 		}
 
 		/// <summary> Checks if specified keyCode is pressed down. </summary>
-		/// <param name="virtualkeyCode">keycode to check</param>
+		/// <param name="virtualKeyCode">keycode to check</param>
 		/// <returns>True if key is down</returns>
-		public bool GetKeyDown(int virtualkeyCode)
+		public bool GetKeyDown(int virtualKeyCode)
 		{
-			int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState(virtualkeyCode));
+			int s = Convert.ToInt32(NativeMethods.GetAsyncKeyState(virtualKeyCode));
 			return (s == -32767) && ConsoleFocused();
 		}
 
@@ -614,7 +732,7 @@
 			NativeMethods.GetWindowRect(consoleHandle, ref r);
 
 			if (NativeMethods.GetCursorPos(out NativeMethods.POINT p)) {
-				Point point = new Point();
+				Point point;
 				if (!IsBorderless) {
 					p.Y -= 29;
 					point = new Point(
