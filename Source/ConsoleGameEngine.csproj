@@ -56,6 +56,7 @@
     <Compile Include="ConsoleHelper.cs" />
     <Compile Include="ConsolePalette.cs" />
     <Compile Include="FigletFont.cs" />
+    <Compile Include="Glyph.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
