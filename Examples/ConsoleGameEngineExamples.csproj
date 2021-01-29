@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ConsoleGameEngineExamples.CaveGenerator</StartupObject>
+    <StartupObject>ConsoleGameEngineExamples.HelloWorld</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ConsoleGameEngine, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -60,6 +60,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="caligraphy.flf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="README.md" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

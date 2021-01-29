@@ -138,8 +138,10 @@
 		public void ClearBuffer() {
 			/*Array.Clear(CharBuffer, 0, CharBuffer.Length);
 			Array.Clear(ColorBuffer, 0, ColorBuffer.Length);
-			Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);*/
-			Array.Clear(GlyphBuffer, 0, GlyphBuffer.Length);
+			Array.Clear(BackgroundBuffer, 0, BackgroundBuffer.Length);*/			
+			for (int y = 0; y < GlyphBuffer.GetLength(1); y++)
+				for (int x = 0; x < GlyphBuffer.GetLength(0); x++)
+					GlyphBuffer[x, y] = new Glyph();
 		}
 
 		/// <summary> Blits the screenbuffer to the Console window. </summary>
