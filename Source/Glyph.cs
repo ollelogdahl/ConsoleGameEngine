@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleGameEngine
 {
-	public class Glyph
+	public struct Glyph
 	{
 		public char c;
 		public int fg;
