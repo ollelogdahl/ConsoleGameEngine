@@ -100,7 +100,7 @@
 		/// </summary>
 		/// <param name="selectedPoint"></param>
 		/// <returns></returns>
-		public Glyph PixelAt(Point selectedPoint)
+		public Glyph? PixelAt(Point selectedPoint)
 		{
 			if(selectedPoint.X > 0 && selectedPoint.X < GlyphBuffer.GetLength(0) && selectedPoint.Y > 0 && selectedPoint.Y < GlyphBuffer.GetLength(1))
 				return GlyphBuffer[selectedPoint.X, selectedPoint.Y];
